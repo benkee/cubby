@@ -26,7 +26,7 @@ class Cubby extends StatelessWidget {
             children: const [
               Icon(Icons.restaurant_menu),
               SizedBox(width: 10),
-              Text('Cubby'),
+              Text('Cubby Test'),
             ],
           ),
         ),
