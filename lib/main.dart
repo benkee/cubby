@@ -1,6 +1,10 @@
+import 'package:cubby/views/wrapper.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main(){
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(Cubby());
 }
 
@@ -20,17 +24,7 @@ class Cubby extends StatelessWidget {
           )
         )
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: const [
-              Icon(Icons.restaurant_menu),
-              SizedBox(width: 10),
-              Text('Cubby Test'),
-            ],
-          ),
-        ),
-      ),
+      home: Wrapper(),
     );
   }
 }

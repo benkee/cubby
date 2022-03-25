@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "859863983093",
+    "project_id": "cubby-6bb87",
+    "storage_bucket": "cubby-6bb87.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859863983093:android:20b073d0514dd95f98f6bc",
+        "android_client_info": {
+          "package_name": "com.ben.cubby"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "859863983093-s2gpuhi2slj2jfi79ggkjper5sqntg90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGHl9UORuK_nntXnai3LQf7Vc8S2rXSt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "859863983093-s2gpuhi2slj2jfi79ggkjper5sqntg90.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
