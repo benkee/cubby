@@ -1,7 +1,6 @@
 import 'package:cubby/services/form_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../../services/form_validator.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -14,6 +13,7 @@ class _SignUpPage extends State<SignUpPage> {
   final username = TextEditingController();
   final password = TextEditingController();
   final firstName = TextEditingController();
+  @override
   late BuildContext context;
 
   checkAuthentication() async {
@@ -33,7 +33,7 @@ class _SignUpPage extends State<SignUpPage> {
       UserCredential userCredential =
       await _auth.createUserWithEmailAndPassword(
           email: username.text, password: password.text);
-      userCredential.user?.updateDisplayName(firstName.text);
+      await _auth.currentUser!.updateDisplayName(firstName.text);
       print(userCredential);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

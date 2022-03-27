@@ -9,11 +9,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
+  String displayName = '';
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? user;
   bool userSignedIn = false;
   late BuildContext context;
   int _currentIndex = 1;
+  String currentUID = '';
 
   final PageController _pageController = PageController(initialPage: 1);
 
@@ -29,7 +31,7 @@ class _HomePage extends State<HomePage> {
     _auth.authStateChanges().listen((User? user) {
       if (this.user != null) {
         setState(() {
-          this.user = user!;
+          this.user = user;
           userSignedIn = true;
         });
       }
@@ -46,6 +48,8 @@ class _HomePage extends State<HomePage> {
     super.initState();
     userNotSignedIn();
     setUserSignedIn();
+    displayName = _auth.currentUser?.displayName ?? '';
+    currentUID = _auth.currentUser?.uid ?? '';
   }
 
   @override
@@ -76,6 +80,9 @@ class _HomePage extends State<HomePage> {
           Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Welcome, ' + displayName),
+              ],
             ),
           ),
           RecipePage()
@@ -99,7 +106,11 @@ class _HomePage extends State<HomePage> {
         ],
         currentIndex: _currentIndex,
         onTap: (index){
-          _pageController.animateToPage(index, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+          _pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.ease
+          );
         },
       ),
     );

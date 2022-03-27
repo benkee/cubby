@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// ignore: use_key_in_widget_constructors
 class SignInPage extends StatefulWidget {
   @override
   _SignInPage createState() => _SignInPage();
@@ -10,6 +11,7 @@ class _SignInPage extends State<SignInPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final username = TextEditingController();
   final password = TextEditingController();
+  @override
   late BuildContext context;
 
   checkCurrentUser() async {
@@ -28,7 +30,7 @@ class _SignInPage extends State<SignInPage> {
         print('signInUser: Sign in was successful.');
         print(userCredential);
       } else {
-        _updateFormAlertText('Email or password is missing');print('signInUser: .');
+        _updateFormAlertText('Email or password is missing');
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -70,7 +72,7 @@ class _SignInPage extends State<SignInPage> {
     return Scaffold(
       body: Container(
         color: Colors.lightGreen,
-        padding: EdgeInsets.all(25),
+        padding: const EdgeInsets.all(25),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Center(
