@@ -1,60 +1,55 @@
+import 'package:cubby/services/form_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class SignInPage extends StatefulWidget {
+import '../../services/form_validator.dart';
+
+class SignUpPage extends StatefulWidget {
   @override
-  _SignInPage createState() => _SignInPage();
+  _SignUpPage createState() => _SignUpPage();
 }
 
-class _SignInPage extends State<SignInPage> {
+class _SignUpPage extends State<SignUpPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final username = TextEditingController();
   final password = TextEditingController();
+  final firstName = TextEditingController();
   late BuildContext context;
 
-  checkCurrentUser() async {
-    _auth.authStateChanges().listen((User? user) async {
+  checkAuthentication() async {
+    _auth.authStateChanges().listen((User? user) {
       if (user != null) {
         Navigator.pushReplacementNamed(context, "/");
       }
     });
   }
 
-  void signInUser() async {
+  toSignIn() async {
+    Navigator.pushReplacementNamed(context, "/SignInPage");
+  }
+
+  void signUp() async {
     try {
-      if (username.text != "" && password.text != "") {
-        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-            email: username.text, password: password.text);
-        print('signInUser: Sign in was successful.');
-        print(userCredential);
-      } else {
-        _updateFormAlertText('Email or password is missing');print('signInUser: .');
-      }
+      UserCredential userCredential =
+      await _auth.createUserWithEmailAndPassword(
+          email: username.text, password: password.text);
+      userCredential.user?.updateDisplayName(firstName.text);
+      print(userCredential);
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        _updateFormAlertText('No user found for that email');
-      } else if (e.code == 'wrong-password') {
-        _updateFormAlertText('Incorrect password');
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
       }
+    } catch (e) {
+      print(e);
     }
-  }
-
-  signUpUser() async {
-    Navigator.pushReplacementNamed(context, "/SignUpPage");
-  }
-
-  String _formAlertText = '';
-
-  void _updateFormAlertText(String text){
-    setState(() {
-      _formAlertText = text;
-    });
   }
 
   @override
   void initState() {
     super.initState();
-    checkCurrentUser();
+    checkAuthentication();
   }
 
   @override
@@ -62,12 +57,25 @@ class _SignInPage extends State<SignInPage> {
     super.dispose();
     username.dispose();
     password.dispose();
+    firstName.dispose();
+  }
+
+  String _formAlertText = '';
+
+  void _updateFormAlertText(String text){
+    setState(() {
+      _formAlertText = text;
+      if(_formAlertText == 'The field is required') {
+        _formAlertText = 'All fields required';
+      }
+    });
   }
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     setState(() => this.context = context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: Colors.lightGreen,
         padding: EdgeInsets.all(25),
@@ -81,15 +89,15 @@ class _SignInPage extends State<SignInPage> {
                 fontSize: 35,
                 fontWeight: FontWeight.bold,
                 color: Colors.amber,
+                ),
               ),
-          ),
               const SizedBox(height: 50),
               TextField(
                 controller: username,
                 obscureText: false,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'E-mail',
+                  hintText: 'Email',
                 ),
               ),
               const SizedBox(height: 10),
@@ -101,31 +109,50 @@ class _SignInPage extends State<SignInPage> {
                   hintText: 'Password',
                 ),
               ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: firstName,
+                obscureText: false,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'First Name',
+                ),
+              ),
+              const SizedBox(height: 10),
               Text(
-                  _formAlertText
+                _formAlertText
               ),
               const SizedBox(height: 30),
               SizedBox(
                 width: 150,
                 child: ElevatedButton(
                   onPressed: () {
-                    signInUser();
+                    String? validator = FormValidator.validateSignUp(
+                        username.text,
+                        password.text,
+                        firstName.text);
+                    if(validator != null){
+                      _updateFormAlertText(validator);
+                    }else{
+                      signUp();
+                    }
+
                   },
                   child: const Center(
-                    child: Text('Sign-in'),
+                    child: Text('Sign Up'),
                   ),
                 ),
               ),
               const SizedBox(height: 30),
-              const Text("Don't have an account?"),
+              const Text("Already have an account?"),
               SizedBox(
                 width: 150,
                 child: ElevatedButton(
                   onPressed: () {
-                    signUpUser();
+                    toSignIn();
                   },
                   child: const Center(
-                    child: Text('Sign Up'),
+                    child: Text('Sign In'),
                   ),
                 ),
               ),

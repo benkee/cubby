@@ -1,6 +1,9 @@
-import 'package:cubby/views/wrapper.dart';
+import 'package:cubby/views/authenticate/sign_up.dart';
+import 'package:cubby/views/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'views/authenticate/sign_in.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,18 +16,18 @@ class Cubby extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cubby',
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter',
       theme: ThemeData(
-        primaryColor: Colors.lightGreen,
-        primarySwatch: Colors.lightGreen,
-        canvasColor: Colors.amberAccent,
-        textTheme: const TextTheme(
-          bodyText2: TextStyle(
-            color: Colors.white,
-          )
-        )
+        primarySwatch: Colors.amber,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Wrapper(),
+      home: HomePage(),
+      routes: <String, WidgetBuilder>{
+        "/SignInPage": (BuildContext context) => SignInPage(),
+        "/SignUpPage": (BuildContext context) => SignUpPage(),
+        "/HomePage": (BuildContext context) => HomePage(),
+      },
     );
   }
 }
