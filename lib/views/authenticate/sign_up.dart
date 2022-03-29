@@ -78,7 +78,7 @@ class _SignUpPage extends State<SignUpPage> {
       resizeToAvoidBottomInset: false,
       body: Container(
         color: Colors.lightGreen,
-        padding: EdgeInsets.all(25),
+        padding: const EdgeInsets.all(25),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Center(

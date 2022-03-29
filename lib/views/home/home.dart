@@ -1,3 +1,5 @@
+import 'package:cubby/models/food_item.dart';
+import 'package:cubby/services/crud.dart';
 import 'package:cubby/views/home/inventory.dart';
 import 'package:cubby/views/home/recipes.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,7 @@ class _HomePage extends State<HomePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? user;
   bool userSignedIn = false;
+  @override
   late BuildContext context;
   int _currentIndex = 1;
   String currentUID = '';
@@ -61,7 +64,7 @@ class _HomePage extends State<HomePage> {
         title: const Text('Cubby'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               signOut();
             },
@@ -82,7 +85,23 @@ class _HomePage extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Welcome, ' + displayName),
-              ],
+                ElevatedButton(
+                  onPressed: () async {
+                    // FoodItem item = FoodItem('apple', 0);
+                    // firebaseCRUD.addFoodItem(item, _auth.currentUser?.uid.toString() ?? '');
+                    List<FoodItem> foodItems =
+                      await firebaseCRUD.getFoodItems(
+                          _auth.currentUser?.uid.toString() ?? ''
+                        );
+                    for (var item in foodItems) {
+                      print(item.name);
+                    }
+                  },
+                  child: const Center(
+                  child: Text('Get Items'),
+                  ),
+                ),
+              ]
             ),
           ),
           RecipePage()
