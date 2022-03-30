@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cubby/models/food_item.dart';
 
-
 // ignore: camel_case_types
-class firebaseCRUD {
+class FirebaseCRUD {
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  static void addFoodItem(FoodItem foodItem, String userID){
+  static void addFoodItem(FoodItem foodItem, String userID) {
     firestore.collection(userID).add(foodItem.toJson());
   }
 
@@ -19,5 +18,4 @@ class firebaseCRUD {
     });
     return foodItems;
   }
-
 }
