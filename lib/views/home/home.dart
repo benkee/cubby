@@ -59,7 +59,13 @@ class _HomePage extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.lightGreen,
       appBar: AppBar(
-        title: const Text('Cubby'),
+        title: Container(
+          width: 160,
+          height: 160,
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
+          alignment: Alignment.center,
+          child: Image.asset('assets/images/CubbyLogo.png'),
+        ),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.logout),
@@ -68,50 +74,45 @@ class _HomePage extends State<HomePage> {
             },
           ),
         ],
-    ),
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (newIndex){
-          setState(() {
-            _currentIndex = newIndex;
-          });
-        },
-        children: [
-          InventoryPage(),
-          Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Welcome, ' + displayName),
-              ]
-            ),
-          ),
-          RecipePage()
-        ]
       ),
+      body: PageView(
+          controller: _pageController,
+          onPageChanged: (newIndex) {
+            setState(() {
+              _currentIndex = newIndex;
+            });
+          },
+          children: [
+            InventoryPage(),
+            Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Welcome, ' + displayName),
+                  ]),
+            ),
+            RecipePage()
+          ]),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.lightGreen,
         items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_basket_rounded),
-          label: 'Inventory',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.book),
-          label: 'Recipes',
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_basket_rounded),
+            label: 'Inventory',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Recipes',
           ),
         ],
         currentIndex: _currentIndex,
-        onTap: (index){
-          _pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.ease
-          );
+        onTap: (index) {
+          _pageController.animateToPage(index,
+              duration: const Duration(milliseconds: 500), curve: Curves.ease);
         },
       ),
     );
