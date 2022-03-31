@@ -17,21 +17,21 @@ class _InventoryPageState extends State<InventoryPage> {
       backgroundColor: Colors.lightGreen,
       body: FutureBuilder(
         builder: (context, projectSnap) {
-          if (projectSnap.connectionState == ConnectionState.none) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (projectSnap.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
+          if (projectSnap.hasData) {
             return ListView.builder(
                 itemCount: (projectSnap.data as List<FoodItem>).length,
                 itemBuilder: (context, index) {
                   List<FoodItem> foodItems = projectSnap.data as List<FoodItem>;
                   return FoodItemCard(foodItem: foodItems[index]);
                 });
+          } else if (projectSnap.connectionState == ConnectionState.done) {
+            return const Center(
+              child: Text('Try adding an item of food using the + button'),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
         future: FirebaseCRUD.getFoodItems(

@@ -9,14 +9,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  String displayName = '';
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  late String displayName =
+      FirebaseAuth.instance.currentUser?.displayName ?? '';
+  late String currentUID = FirebaseAuth.instance.currentUser?.uid ?? '';
   User? user;
   bool userSignedIn = false;
   @override
   late BuildContext context;
   int _currentIndex = 1;
-  String currentUID = '';
 
   final PageController _pageController = PageController(initialPage: 1);
 
@@ -49,8 +50,6 @@ class _HomePage extends State<HomePage> {
     super.initState();
     userNotSignedIn();
     setUserSignedIn();
-    displayName = _auth.currentUser?.displayName ?? '';
-    currentUID = _auth.currentUser?.uid ?? '';
   }
 
   @override

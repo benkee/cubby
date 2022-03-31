@@ -25,10 +25,8 @@ class _SignInPage extends State<SignInPage> {
   void signInUser() async {
     try {
       if (username.text != "" && password.text != "") {
-        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        await _auth.signInWithEmailAndPassword(
             email: username.text, password: password.text);
-        print('signInUser: Sign in was successful.');
-        print(userCredential);
       } else {
         _updateFormAlertText('Email or password is missing');
       }
@@ -47,7 +45,7 @@ class _SignInPage extends State<SignInPage> {
 
   String _formAlertText = '';
 
-  void _updateFormAlertText(String text){
+  void _updateFormAlertText(String text) {
     setState(() {
       _formAlertText = text;
     });
@@ -79,12 +77,14 @@ class _SignInPage extends State<SignInPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text ('Welcome to Cubby', style: TextStyle(
-                fontSize: 35,
-                fontWeight: FontWeight.bold,
-                color: Colors.amber,
+              const Text(
+                'Welcome to Cubby',
+                style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.amber,
+                ),
               ),
-          ),
               const SizedBox(height: 50),
               TextField(
                 controller: username,
@@ -103,9 +103,7 @@ class _SignInPage extends State<SignInPage> {
                   hintText: 'Password',
                 ),
               ),
-              Text(
-                  _formAlertText
-              ),
+              Text(_formAlertText),
               const SizedBox(height: 30),
               SizedBox(
                 width: 150,

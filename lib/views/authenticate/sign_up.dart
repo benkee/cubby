@@ -31,15 +31,19 @@ class _SignUpPage extends State<SignUpPage> {
   void signUp() async {
     try {
       UserCredential userCredential =
-      await _auth.createUserWithEmailAndPassword(
-          email: username.text, password: password.text);
+          await _auth.createUserWithEmailAndPassword(
+              email: username.text, password: password.text);
       await _auth.currentUser!.updateDisplayName(firstName.text);
       print(userCredential);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        setState(() {
+          _formAlertText = 'The password provided is too weak.';
+        });
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        setState(() {
+          _formAlertText = 'The account already exists for that email.';
+        });
       }
     } catch (e) {
       print(e);
@@ -62,10 +66,10 @@ class _SignUpPage extends State<SignUpPage> {
 
   String _formAlertText = '';
 
-  void _updateFormAlertText(String text){
+  void _updateFormAlertText(String text) {
     setState(() {
       _formAlertText = text;
-      if(_formAlertText == 'The field is required') {
+      if (_formAlertText == 'The field is required') {
         _formAlertText = 'All fields required';
       }
     });
@@ -85,10 +89,12 @@ class _SignUpPage extends State<SignUpPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text ('Welcome to Cubby', style: TextStyle(
-                fontSize: 35,
-                fontWeight: FontWeight.bold,
-                color: Colors.amber,
+              const Text(
+                'Welcome to Cubby',
+                style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.amber,
                 ),
               ),
               const SizedBox(height: 50),
@@ -119,24 +125,20 @@ class _SignUpPage extends State<SignUpPage> {
                 ),
               ),
               const SizedBox(height: 10),
-              Text(
-                _formAlertText
-              ),
+              Text(_formAlertText),
               const SizedBox(height: 30),
               SizedBox(
                 width: 150,
                 child: ElevatedButton(
                   onPressed: () {
                     String? validator = FormValidator.validateSignUp(
-                        username.text,
-                        password.text,
-                        firstName.text);
-                    if(validator != null){
+                        username.text, password.text, firstName.text);
+                    if (validator != null) {
                       _updateFormAlertText(validator);
-                    }else{
+                    } else {
+                      print(validator);
                       signUp();
                     }
-
                   },
                   child: const Center(
                     child: Text('Sign Up'),
