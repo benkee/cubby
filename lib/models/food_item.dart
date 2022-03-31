@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
 
 class FoodItem {
-  List<String> foodTypes = [
-    'Fruit',
-    'Vegetable',
-    'Meat',
-    'Tinned',
-    'Dairy',
-    'Frozen'
-  ];
-
   final String _id = UniqueKey().toString();
   String _name;
   int _type;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/food_item.dart';
+import '../../models/food_item.dart';
+import 'package:cubby/constants/constants.dart' as constants;
 
 // ignore: must_be_immutable
 class FoodItemCard extends StatefulWidget {
@@ -35,8 +36,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                            text:
-                                widget.foodItem.foodTypes[widget.foodItem.type],
+                            text: constants.foodTypes[widget.foodItem.type],
                             style: const TextStyle(
                               color: Colors.amber,
                               fontSize: 15,
