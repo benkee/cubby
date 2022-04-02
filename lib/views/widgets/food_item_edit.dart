@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cubby/views/home/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,16 +9,20 @@ import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
 import '../home/inventory.dart';
 
-class FoodItemInput extends StatefulWidget {
+class FoodItemEdit extends StatefulWidget {
+  late FoodItem foodItem;
+  FoodItemEdit({required this.foodItem, Key? key}) : super(key: key);
+
   @override
   _FoodItemInputState createState() => _FoodItemInputState();
 }
 
-class _FoodItemInputState extends State<FoodItemInput> {
-  late String selectedFoodType = 'Fruit';
-  late bool foodOpened = false;
-  late DateTime foodExpiry = DateTime.now();
+class _FoodItemInputState extends State<FoodItemEdit> {
   final name = TextEditingController();
+  late String selectedFoodType =
+      constants.foodTypes.elementAt(widget.foodItem.type);
+  late DateTime foodExpiry = widget.foodItem.expires;
+  late bool foodOpened = widget.foodItem.opened;
 
   @override
   void dispose() {
@@ -42,7 +48,7 @@ class _FoodItemInputState extends State<FoodItemInput> {
     return AlertDialog(
       backgroundColor: Colors.amber[300],
       title: const Text(
-        'Enter Food Item:',
+        'Edit Food Item:',
         style: TextStyle(color: Colors.white),
         overflow: TextOverflow.ellipsis,
       ),
@@ -54,9 +60,9 @@ class _FoodItemInputState extends State<FoodItemInput> {
               TextField(
                 controller: name,
                 obscureText: false,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Name',
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: widget.foodItem.name,
                 ),
               ),
               const SizedBox(height: 20),
@@ -113,14 +119,17 @@ class _FoodItemInputState extends State<FoodItemInput> {
         ElevatedButton(
           onPressed: () {
             int foodType = constants.foodTypes.indexOf(selectedFoodType);
-            FoodItem foodItem = FoodItem(
-              name.text,
-              foodType,
-              foodOpened,
-              foodExpiry,
-            );
-            FirebaseCRUD.addFoodItem(foodItem,
-                FirebaseAuth.instance.currentUser?.uid.toString() ?? '');
+            updateFoodItem(
+                widget.foodItem, name.text, foodType, foodOpened, foodExpiry);
+
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomePage(0)));
+          },
+          child: const Text('Edit Item', style: TextStyle(color: Colors.white)),
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () {
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
@@ -130,16 +139,41 @@ class _FoodItemInputState extends State<FoodItemInput> {
               ),
             );
           },
-          child: const Text('Add Item', style: TextStyle(color: Colors.white)),
-        ),
-        const SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
           child: const Text('Cancel', style: TextStyle(color: Colors.white)),
         ),
       ],
     );
+  }
+
+  void updateFoodItem(FoodItem foodItem, String name, int foodType,
+      bool foodOpened, DateTime foodExpiry) {
+    if (foodItem.name != name && name != '') {
+      FirebaseCRUD.updateFoodItem(
+          widget.foodItem,
+          FirebaseAuth.instance.currentUser?.uid.toString() ?? '',
+          'name',
+          name);
+    }
+    if (foodItem.type != foodType) {
+      FirebaseCRUD.updateFoodItem(
+          widget.foodItem,
+          FirebaseAuth.instance.currentUser?.uid.toString() ?? '',
+          'type',
+          foodType);
+    }
+    if (foodItem.opened != foodOpened) {
+      FirebaseCRUD.updateFoodItem(
+          widget.foodItem,
+          FirebaseAuth.instance.currentUser?.uid.toString() ?? '',
+          'opened',
+          foodOpened);
+    }
+    if (foodItem.expires != foodExpiry) {
+      FirebaseCRUD.updateFoodItem(
+          widget.foodItem,
+          FirebaseAuth.instance.currentUser?.uid.toString() ?? '',
+          'expires',
+          foodExpiry);
+    }
   }
 }

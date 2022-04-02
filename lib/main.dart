@@ -22,11 +22,11 @@ class Cubby extends StatelessWidget {
         primarySwatch: Colors.amber,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: HomePage(1),
       routes: <String, WidgetBuilder>{
         "/SignInPage": (BuildContext context) => SignInPage(),
         "/SignUpPage": (BuildContext context) => SignUpPage(),
-        "/HomePage": (BuildContext context) => HomePage(),
+        "/HomePage": (BuildContext context) => HomePage(1),
       },
     );
   }

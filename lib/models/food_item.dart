@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FoodItem {
-  final String _id = UniqueKey().toString();
+  String _id = '';
   String _name;
   int _type;
   bool _opened;
@@ -19,6 +19,10 @@ class FoodItem {
   int get type => _type;
   bool get opened => _opened;
   DateTime get expires => _expires;
+
+  setID(String id) {
+    _id = id;
+  }
 
   set setName(String name) {
     _name = name;

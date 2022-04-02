@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
+  int selectedIndex;
+  HomePage(this.selectedIndex, {Key? key}) : super(key: key);
   @override
   _HomePage createState() => _HomePage();
 }
 
 class _HomePage extends State<HomePage> {
+  PageController? _pageController;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late String displayName =
       FirebaseAuth.instance.currentUser?.displayName ?? '';
@@ -18,8 +21,6 @@ class _HomePage extends State<HomePage> {
   @override
   late BuildContext context;
   int _currentIndex = 1;
-
-  final PageController _pageController = PageController(initialPage: 1);
 
   userNotSignedIn() async {
     _auth.authStateChanges().listen((User? user) {
@@ -50,6 +51,7 @@ class _HomePage extends State<HomePage> {
     super.initState();
     userNotSignedIn();
     setUserSignedIn();
+    _pageController = PageController(initialPage: widget.selectedIndex);
   }
 
   @override
@@ -58,6 +60,7 @@ class _HomePage extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.lightGreen,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Container(
           width: 160,
           height: 160,
@@ -110,7 +113,7 @@ class _HomePage extends State<HomePage> {
         ],
         currentIndex: _currentIndex,
         onTap: (index) {
-          _pageController.animateToPage(index,
+          _pageController?.animateToPage(index,
               duration: const Duration(milliseconds: 500), curve: Curves.ease);
         },
       ),

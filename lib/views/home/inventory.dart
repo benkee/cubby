@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../models/food_item.dart';
-import '../../services/crud.dart';
+import '../../services/firebase_crud.dart';
 import '../widgets/food_item_card.dart';
 import '../widgets/food_item_input.dart';
 
 class InventoryPage extends StatefulWidget {
+  getState() => _InventoryPageState();
   @override
   State<InventoryPage> createState() => _InventoryPageState();
 }
@@ -17,21 +18,21 @@ class _InventoryPageState extends State<InventoryPage> {
       backgroundColor: Colors.lightGreen,
       body: FutureBuilder(
         builder: (context, projectSnap) {
-          if (projectSnap.hasData) {
+          if (projectSnap.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (projectSnap.hasError) {
+            return Center(
+              child: Text('Error gathering data: ${projectSnap.error}'),
+            );
+          } else {
             return ListView.builder(
                 itemCount: (projectSnap.data as List<FoodItem>).length,
                 itemBuilder: (context, index) {
                   List<FoodItem> foodItems = projectSnap.data as List<FoodItem>;
                   return FoodItemCard(foodItem: foodItems[index]);
                 });
-          } else if (projectSnap.connectionState == ConnectionState.done) {
-            return const Center(
-              child: Text('Try adding an item of food using the + button'),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
           }
         },
         future: FirebaseCRUD.getFoodItems(

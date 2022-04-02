@@ -34,7 +34,6 @@ class _SignUpPage extends State<SignUpPage> {
           await _auth.createUserWithEmailAndPassword(
               email: username.text, password: password.text);
       await _auth.currentUser!.updateDisplayName(firstName.text);
-      print(userCredential);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         setState(() {
@@ -136,7 +135,6 @@ class _SignUpPage extends State<SignUpPage> {
                     if (validator != null) {
                       _updateFormAlertText(validator);
                     } else {
-                      print(validator);
                       signUp();
                     }
                   },
