@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
-import '../widgets/food_item_card.dart';
-import '../widgets/food_item_input.dart';
+import '../../widgets/food_item_card.dart';
+import '../../widgets/food_item_input.dart';
 
 class InventoryPage extends StatefulWidget {
   const InventoryPage({Key? key}) : super(key: key);

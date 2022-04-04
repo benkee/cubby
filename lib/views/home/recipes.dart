@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../models/recipe.dart';
 import '../../services/firebase_crud.dart';
-import '../widgets/recipe_card.dart';
-import '../widgets/recipe_input.dart';
+import '../../widgets/recipe_card.dart';
+import '../../widgets/recipe_input.dart';
 
 class RecipePage extends StatefulWidget {
   const RecipePage({Key? key}) : super(key: key);

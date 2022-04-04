@@ -1,6 +1,6 @@
+import 'package:cubby/constants/constants.dart' as constants;
 import 'package:cubby/views/home/home.dart';
 import 'package:flutter/material.dart';
-import 'package:cubby/constants/constants.dart' as constants;
 
 import '../../models/recipe.dart';
 import '../../services/firebase_crud.dart';
@@ -254,8 +254,8 @@ class _RecipeInputState extends State<RecipeInput> {
     for (var map in _ingredientValues) {
       if (map['id'] == key) {
         map['name'] = value;
+        replaced = true;
       }
-      replaced = true;
     }
     if (!replaced) _ingredientValues.add(json);
   }
@@ -266,8 +266,8 @@ class _RecipeInputState extends State<RecipeInput> {
     for (var map in _ingredientValues) {
       if (map['id'] == key) {
         map['amount'] = value;
+        replaced = true;
       }
-      replaced = true;
     }
     if (!replaced) _ingredientValues.add(json);
   }
@@ -308,8 +308,8 @@ class _RecipeInputState extends State<RecipeInput> {
     for (var map in _instructionsValues) {
       if (map['id'] == key) {
         map['step'] = value;
+        replaced = true;
       }
-      replaced = true;
     }
     if (!replaced) _instructionsValues.add(json);
   }

@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
+
 import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
-import '../home/home.dart';
+import '../views/home/home.dart';
 
 // ignore: must_be_immutable
 class FoodItemDeleteCheck extends StatefulWidget {
   late FoodItem foodItem;
   FoodItemDeleteCheck({required this.foodItem, Key? key}) : super(key: key);
   @override
-  _FoodItemInputState createState() => _FoodItemInputState();
+  _FoodItemDeleteCheckState createState() => _FoodItemDeleteCheckState();
 }
 
-class _FoodItemInputState extends State<FoodItemDeleteCheck> {
+class _FoodItemDeleteCheckState extends State<FoodItemDeleteCheck> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.amber[300],
-      title: const Text(
-        'Delete .....',
-        style: TextStyle(color: Colors.white),
+      title: Text(
+        'Delete ${widget.foodItem.name}',
+        style: const TextStyle(color: Colors.white),
         overflow: TextOverflow.ellipsis,
       ),
       content: SingleChildScrollView(

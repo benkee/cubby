@@ -1,8 +1,8 @@
-import 'package:cubby/views/widgets/food_item_edit.dart';
 import 'package:flutter/material.dart';
 import '../../models/food_item.dart';
 import 'package:cubby/constants/constants.dart' as constants;
 import 'food_item_delete_check.dart';
+import 'food_item_edit.dart';
 
 // ignore: must_be_immutable
 class FoodItemCard extends StatefulWidget {

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import '../models/food_item.dart';
 import '../models/recipe.dart';
 
@@ -55,5 +56,9 @@ class FirebaseCRUD {
         .collection(userRecipes)
         .add(recipe.toJson())
         .then((value) => recipe.setID(value.id));
+  }
+
+  static void deleteRecipe(Recipe recipe) {
+    firestore.collection(userRecipes).doc(recipe.id).delete();
   }
 }
