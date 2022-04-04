@@ -1,5 +1,3 @@
-import 'package:cubby/views/home/inventory.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
@@ -32,8 +30,7 @@ class _FoodItemInputState extends State<FoodItemDeleteCheck> {
       actions: <Widget>[
         ElevatedButton(
           onPressed: () {
-            FirebaseCRUD.deleteFoodItem(widget.foodItem,
-                FirebaseAuth.instance.currentUser?.uid.toString() ?? '');
+            FirebaseCRUD.deleteFoodItem(widget.foodItem);
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => HomePage(0)));
           },

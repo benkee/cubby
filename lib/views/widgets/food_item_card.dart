@@ -16,7 +16,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-        color: Colors.blueGrey,
+        color: Colors.grey[500],
         elevation: 8,
         margin: const EdgeInsets.all(15),
         shape: OutlineInputBorder(

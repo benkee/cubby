@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class FoodItem {
   String _id = '';
   String _name;
@@ -42,10 +40,10 @@ class FoodItem {
 
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
-      'type': type,
-      'opened': opened,
-      'expires': expires,
+      'name': _name,
+      'type': _type,
+      'opened': _opened,
+      'expires': _expires,
     };
   }
 

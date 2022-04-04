@@ -8,11 +8,12 @@ import 'views/authenticate/sign_in.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(Cubby());
+  runApp(const Cubby());
 }
 
-// ignore: use_key_in_widget_constructors
 class Cubby extends StatelessWidget {
+  const Cubby({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

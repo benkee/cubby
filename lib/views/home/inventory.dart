@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
@@ -6,6 +5,7 @@ import '../widgets/food_item_card.dart';
 import '../widgets/food_item_input.dart';
 
 class InventoryPage extends StatefulWidget {
+  const InventoryPage({Key? key}) : super(key: key);
   getState() => _InventoryPageState();
   @override
   State<InventoryPage> createState() => _InventoryPageState();
@@ -35,8 +35,7 @@ class _InventoryPageState extends State<InventoryPage> {
                 });
           }
         },
-        future: FirebaseCRUD.getFoodItems(
-            FirebaseAuth.instance.currentUser?.uid.toString() ?? ''),
+        future: FirebaseCRUD.getFoodItems(),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),

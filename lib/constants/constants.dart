@@ -6,3 +6,9 @@ const List<String> foodTypes = [
   'Dairy',
   'Frozen'
 ];
+
+const List<String> foodMeasurements = [
+  'g',
+  'ml',
+  'item',
+];
