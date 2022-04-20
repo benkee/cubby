@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+
 import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
 import '../../widgets/food_item_card.dart';
 import '../../widgets/food_item_input.dart';
 
 class InventoryPage extends StatefulWidget {
-  const InventoryPage({Key? key}) : super(key: key);
+  late String userID;
+
+  InventoryPage({required this.userID, Key? key}) : super(key: key);
   getState() => _InventoryPageState();
   @override
   State<InventoryPage> createState() => _InventoryPageState();
@@ -15,7 +18,7 @@ class _InventoryPageState extends State<InventoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightGreen,
+      backgroundColor: Colors.amber[300],
       body: FutureBuilder(
         builder: (context, projectSnap) {
           if (projectSnap.connectionState == ConnectionState.waiting) {
@@ -31,11 +34,14 @@ class _InventoryPageState extends State<InventoryPage> {
                 itemCount: (projectSnap.data as List<FoodItem>).length,
                 itemBuilder: (context, index) {
                   List<FoodItem> foodItems = projectSnap.data as List<FoodItem>;
-                  return FoodItemCard(foodItem: foodItems[index]);
+                  return FoodItemCard(
+                    foodItem: foodItems[index],
+                    userID: widget.userID,
+                  );
                 });
           }
         },
-        future: FirebaseCRUD.getFoodItems(),
+        future: FirebaseCRUD.getFoodItems(widget.userID),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -43,7 +49,9 @@ class _InventoryPageState extends State<InventoryPage> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (BuildContext context) => FoodItemInput(),
+            builder: (BuildContext context) => FoodItemInput(
+              userID: widget.userID,
+            ),
           );
         },
       ),

@@ -1,12 +1,14 @@
+import 'package:cubby/constants/constants.dart' as constants;
 import 'package:cubby/views/home/home.dart';
 import 'package:flutter/material.dart';
-import 'package:cubby/constants/constants.dart' as constants;
+
 import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
 
 class FoodItemInput extends StatefulWidget {
-  const FoodItemInput({Key? key}) : super(key: key);
+  late String userID;
 
+  FoodItemInput({required this.userID, Key? key}) : super(key: key);
   @override
   _FoodItemInputState createState() => _FoodItemInputState();
 }
@@ -118,7 +120,7 @@ class _FoodItemInputState extends State<FoodItemInput> {
               foodOpened,
               foodExpiry,
             );
-            FirebaseCRUD.addFoodItem(foodItem);
+            FirebaseCRUD.addFoodItem(foodItem, widget.userID);
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(

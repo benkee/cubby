@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 // ignore: use_key_in_widget_constructors
 class SignInPage extends StatefulWidget {
@@ -68,8 +68,9 @@ class _SignInPage extends State<SignInPage> {
   Widget build(context) {
     setState(() => this.context = context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
-        color: Colors.lightGreen,
+        color: Colors.amber[300],
         padding: const EdgeInsets.all(25),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -77,15 +78,13 @@ class _SignInPage extends State<SignInPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                'Welcome to Cubby',
-                style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.amber,
-                ),
+              Container(
+                width: 250,
+                height: 250,
+                alignment: Alignment.center,
+                child: Image.asset('assets/images/CubbyLogo.png'),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 20),
               TextField(
                 controller: username,
                 obscureText: false,

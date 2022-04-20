@@ -7,7 +7,9 @@ import '../views/home/home.dart';
 // ignore: must_be_immutable
 class RecipeDeleteCheck extends StatefulWidget {
   late Recipe recipe;
-  RecipeDeleteCheck({required this.recipe, Key? key}) : super(key: key);
+  late String userID;
+  RecipeDeleteCheck({required this.recipe, required this.userID, Key? key})
+      : super(key: key);
   @override
   _RecipeDeleteCheckState createState() => _RecipeDeleteCheckState();
 }
@@ -31,9 +33,9 @@ class _RecipeDeleteCheckState extends State<RecipeDeleteCheck> {
       actions: <Widget>[
         ElevatedButton(
           onPressed: () {
-            FirebaseCRUD.deleteRecipe(widget.recipe);
+            FirebaseCRUD.deleteRecipe(widget.recipe, widget.userID);
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage(0)));
+                context, MaterialPageRoute(builder: (context) => HomePage(2)));
           },
           child:
               const Text('Delete Item', style: TextStyle(color: Colors.white)),

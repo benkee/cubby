@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+
 import '../../models/recipe.dart';
 import '../../services/firebase_crud.dart';
 import '../../widgets/recipe_card.dart';
 import '../../widgets/recipe_input.dart';
 
 class RecipePage extends StatefulWidget {
-  const RecipePage({Key? key}) : super(key: key);
+  late String userID;
+  RecipePage({required userID, Key? key}) : super(key: key);
   getState() => _RecipePageState();
   @override
   State<RecipePage> createState() => _RecipePageState();
@@ -15,7 +17,7 @@ class _RecipePageState extends State<RecipePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightGreen,
+      backgroundColor: Colors.amber[300],
       body: FutureBuilder(
         builder: (context, projectSnap) {
           if (projectSnap.connectionState == ConnectionState.waiting) {
@@ -36,11 +38,14 @@ class _RecipePageState extends State<RecipePage> {
                 itemCount: (projectSnap.data as List<Recipe>).length,
                 itemBuilder: (context, index) {
                   List<Recipe> recipes = projectSnap.data as List<Recipe>;
-                  return RecipeCard(recipe: recipes[index]);
+                  return RecipeCard(
+                    recipe: recipes[index],
+                    userID: widget.userID,
+                  );
                 });
           }
         },
-        future: FirebaseCRUD.getRecipes(),
+        future: FirebaseCRUD.getRecipes(widget.userID),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -48,7 +53,9 @@ class _RecipePageState extends State<RecipePage> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (BuildContext context) => RecipeInput(),
+            builder: (BuildContext context) => RecipeInput(
+              userID: widget.userID,
+            ),
           );
         },
       ),

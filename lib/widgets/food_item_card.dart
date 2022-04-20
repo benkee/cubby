@@ -1,13 +1,16 @@
-import 'package:flutter/material.dart';
-import '../../models/food_item.dart';
 import 'package:cubby/constants/constants.dart' as constants;
+import 'package:flutter/material.dart';
+
+import '../../models/food_item.dart';
 import 'food_item_delete_check.dart';
 import 'food_item_edit.dart';
 
 // ignore: must_be_immutable
 class FoodItemCard extends StatefulWidget {
   late FoodItem foodItem;
-  FoodItemCard({required this.foodItem, Key? key}) : super(key: key);
+  late String userID;
+  FoodItemCard({required this.foodItem, required this.userID, Key? key})
+      : super(key: key);
   @override
   State<FoodItemCard> createState() => _FoodItemCardState();
 }
@@ -16,7 +19,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-        color: Colors.grey[500],
+        color: Colors.lightGreen,
         elevation: 8,
         margin: const EdgeInsets.all(15),
         shape: OutlineInputBorder(
@@ -54,8 +57,10 @@ class _FoodItemCardState extends State<FoodItemCard> {
                           onPressed: () {
                             showDialog(
                               context: context,
-                              builder: (BuildContext context) =>
-                                  FoodItemEdit(foodItem: widget.foodItem),
+                              builder: (BuildContext context) => FoodItemEdit(
+                                foodItem: widget.foodItem,
+                                userID: widget.userID,
+                              ),
                             );
                           },
                           icon: const Icon(Icons.edit)),
@@ -66,6 +71,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                                 builder: (BuildContext context) =>
                                     FoodItemDeleteCheck(
                                       foodItem: widget.foodItem,
+                                      userID: widget.userID,
                                     ));
                           },
                           icon: const Icon(Icons.delete)),

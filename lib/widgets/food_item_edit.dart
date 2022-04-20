@@ -1,12 +1,15 @@
+import 'package:cubby/constants/constants.dart' as constants;
 import 'package:cubby/views/home/home.dart';
 import 'package:flutter/material.dart';
-import 'package:cubby/constants/constants.dart' as constants;
+
 import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
 
 class FoodItemEdit extends StatefulWidget {
   late FoodItem foodItem;
-  FoodItemEdit({required this.foodItem, Key? key}) : super(key: key);
+  late String userID;
+  FoodItemEdit({required this.foodItem, required this.userID, Key? key})
+      : super(key: key);
 
   @override
   _FoodItemInputState createState() => _FoodItemInputState();
@@ -143,16 +146,19 @@ class _FoodItemInputState extends State<FoodItemEdit> {
   void updateFoodItem(FoodItem foodItem, String name, int foodType,
       bool foodOpened, DateTime foodExpiry) {
     if (foodItem.name != name && name != '') {
-      FirebaseCRUD.updateFoodItem(widget.foodItem, 'name', name);
+      FirebaseCRUD.updateFoodItem(widget.foodItem, 'name', name, widget.userID);
     }
     if (foodItem.type != foodType) {
-      FirebaseCRUD.updateFoodItem(widget.foodItem, 'type', foodType);
+      FirebaseCRUD.updateFoodItem(
+          widget.foodItem, 'type', foodType, widget.userID);
     }
     if (foodItem.opened != foodOpened) {
-      FirebaseCRUD.updateFoodItem(widget.foodItem, 'opened', foodOpened);
+      FirebaseCRUD.updateFoodItem(
+          widget.foodItem, 'opened', foodOpened, widget.userID);
     }
     if (foodItem.expires != foodExpiry) {
-      FirebaseCRUD.updateFoodItem(widget.foodItem, 'expires', foodExpiry);
+      FirebaseCRUD.updateFoodItem(
+          widget.foodItem, 'expires', foodExpiry, widget.userID);
     }
   }
 }

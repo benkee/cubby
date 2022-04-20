@@ -6,7 +6,9 @@ import '../../models/recipe.dart';
 // ignore: must_be_immutable
 class RecipeCard extends StatefulWidget {
   late Recipe recipe;
-  RecipeCard({required this.recipe, Key? key}) : super(key: key);
+  late String userID;
+  RecipeCard({required this.recipe, required this.userID, Key? key})
+      : super(key: key);
   @override
   State<RecipeCard> createState() => _RecipeCardState();
 }
@@ -16,7 +18,7 @@ class _RecipeCardState extends State<RecipeCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-        color: Colors.blueGrey,
+        color: Colors.lightGreen,
         elevation: 8,
         margin: const EdgeInsets.all(15),
         shape: OutlineInputBorder(
@@ -54,6 +56,7 @@ class _RecipeCardState extends State<RecipeCard> {
                                 builder: (BuildContext context) =>
                                     RecipeDeleteCheck(
                                       recipe: widget.recipe,
+                                      userID: widget.userID,
                                     ));
                           },
                           icon: const Icon(Icons.delete)),

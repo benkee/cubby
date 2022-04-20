@@ -1,7 +1,13 @@
 import 'package:cubby/views/home/inventory.dart';
 import 'package:cubby/views/home/recipes.dart';
-import 'package:flutter/material.dart';
+import 'package:cubby/widgets/recipe_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+import '../../models/food_item.dart';
+import '../../models/recipe.dart';
+import '../../services/firebase_crud.dart';
+import '../../widgets/food_item_card.dart';
 
 class HomePage extends StatefulWidget {
   int selectedIndex;
@@ -21,6 +27,7 @@ class _HomePage extends State<HomePage> {
   @override
   late BuildContext context;
   int _currentIndex = 1;
+  late List<FoodItem> expiringFoodItems;
 
   userNotSignedIn() async {
     _auth.authStateChanges().listen((User? user) {
@@ -43,7 +50,6 @@ class _HomePage extends State<HomePage> {
 
   signOut() {
     _auth.signOut();
-    print('SignOut: Sign out was successful.');
   }
 
   @override
@@ -52,20 +58,22 @@ class _HomePage extends State<HomePage> {
     userNotSignedIn();
     setUserSignedIn();
     _pageController = PageController(initialPage: widget.selectedIndex);
+    expiringFoodItems = [];
   }
 
   @override
   Widget build(context) {
     setState(() => this.context = context);
     return Scaffold(
-      backgroundColor: Colors.lightGreen,
+      backgroundColor: Colors.amber[300],
       appBar: AppBar(
+        backgroundColor: Colors.amber[400],
         automaticallyImplyLeading: false,
         title: Container(
-          width: 160,
+          width: 180,
           height: 160,
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
-          alignment: Alignment.center,
+          padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+          alignment: Alignment.centerRight,
           child: Image.asset('assets/images/CubbyLogo.png'),
         ),
         actions: <Widget>[
@@ -85,18 +93,92 @@ class _HomePage extends State<HomePage> {
             });
           },
           children: [
-            InventoryPage(),
-            Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Welcome, ' + displayName),
-                  ]),
+            InventoryPage(
+              userID: currentUID,
             ),
-            RecipePage()
+            Center(
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                const SizedBox(height: 10),
+                Text('Welcome, ' + displayName),
+                const SizedBox(height: 10),
+                const Text('Food expiring soon: '),
+                Container(
+                  height: 250,
+                  child: FutureBuilder(
+                    builder: (context, projectSnap) {
+                      if (projectSnap.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (projectSnap.hasError) {
+                        return Center(
+                          child: Text(
+                              'Error gathering data: ${projectSnap.error}'),
+                        );
+                      } else {
+                        return ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount:
+                                (projectSnap.data as List<FoodItem>).length,
+                            itemBuilder: (context, index) {
+                              expiringFoodItems =
+                                  projectSnap.data as List<FoodItem>;
+                              return FoodItemCard(
+                                foodItem: expiringFoodItems[index],
+                                userID: currentUID,
+                              );
+                            });
+                      }
+                    },
+                    future: FirebaseCRUD.getExpiringFoodItems(currentUID),
+                  ),
+                ),
+                const Text('Recommended Recipes: '),
+                Container(
+                  height: 300,
+                  child: FutureBuilder(
+                    builder: (context, projectSnap) {
+                      if (projectSnap.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (projectSnap.hasError) {
+                        return Center(
+                          child: Text(
+                              'Error gathering data: ${projectSnap.error}'),
+                        );
+                      } else {
+                        return ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount:
+                                (projectSnap.data as List<Recipe>).length,
+                            itemBuilder: (context, index) {
+                              List<Recipe> recipes =
+                                  projectSnap.data as List<Recipe>;
+                              return RecipeCard(
+                                recipe: recipes[index],
+                                userID: currentUID,
+                              );
+                            });
+                      }
+                    },
+                    future: FirebaseCRUD.getRecommendedRecipes(
+                        expiringFoodItems, currentUID),
+                  ),
+                ),
+              ]),
+            ),
+            RecipePage(
+              userID: currentUID,
+            )
           ]),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.lightGreen,
+        backgroundColor: Colors.amber[400],
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_basket_rounded),
