@@ -7,7 +7,7 @@ import '../../widgets/recipe_input.dart';
 
 class RecipePage extends StatefulWidget {
   late String userID;
-  RecipePage({required userID, Key? key}) : super(key: key);
+  RecipePage({required this.userID, Key? key}) : super(key: key);
   getState() => _RecipePageState();
   @override
   State<RecipePage> createState() => _RecipePageState();
