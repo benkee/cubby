@@ -38,6 +38,14 @@ class FirebaseCRUD {
         .update({field: value});
   }
 
+  static void updateRecipe(
+      Recipe recipe, String field, dynamic value, String userID) {
+    firestore
+        .collection(userID + 'Recipes')
+        .doc(recipe.id)
+        .update({field: value});
+  }
+
   static Future<List<Recipe>> getRecipes(String userID) async {
     List<Recipe> recipes = [];
     await firestore.collection(userID + 'Recipes').get().then((querySnapshot) {
@@ -62,7 +70,6 @@ class FirebaseCRUD {
   }
 
   static Future<List<FoodItem>> getExpiringFoodItems(String userID) async {
-    print(userID + 'FoodItem');
     List<FoodItem> foodItems = [];
     await firestore
         .collection(userID + 'FoodItem')

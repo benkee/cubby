@@ -42,16 +42,11 @@ class _FoodItemCardState extends State<FoodItemCard> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: constants.foodTypes[widget.foodItem.type],
-                              style: const TextStyle(
-                                color: Colors.amber,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w200,
-                              ))
-                        ],
                       )),
+                      const SizedBox(width: 10,),
+                      CircleAvatar(
+                        backgroundImage: AssetImage(constants.foodTypeImage[0]),
+                      ),
                       const Spacer(),
                       IconButton(
                           onPressed: () {

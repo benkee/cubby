@@ -1,4 +1,5 @@
 import 'package:cubby/widgets/recipe_delete_check.dart';
+import 'package:cubby/widgets/recipe_edit.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/recipe.dart';
@@ -40,15 +41,17 @@ class _RecipeCardState extends State<RecipeCard> {
                       const Spacer(),
                       Text('Prep Time: ' +
                           widget.recipe.preparationTime.toString()),
-                      // IconButton(
-                      //     onPressed: () {
-                      //       showDialog(
-                      //         context: context,
-                      //         builder: (BuildContext context) =>
-                      //             FoodItemEdit(foodItem: widget.recipe),
-                      //       );
-                      //     },
-                      //     icon: const Icon(Icons.edit)),
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => RecipeEdit(
+                                recipe: widget.recipe,
+                                userID: widget.userID,
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.edit)),
                       IconButton(
                           onPressed: () {
                             showDialog(
@@ -65,31 +68,35 @@ class _RecipeCardState extends State<RecipeCard> {
                   const SizedBox(height: 10),
                   const Text('Ingredients:'),
                   Expanded(
-                    child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: widget.recipe.ingredients.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Text(
-                              '\u2022  ${widget.recipe.ingredients[index]['amount']}${widget.recipe.ingredients[index]['measurement']} of ${widget.recipe.ingredients[index]['name']}');
-                        }),
+                    child: RawScrollbar(
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: widget.recipe.ingredients.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Text(
+                                '\u2022  ${widget.recipe.ingredients[index]['amount']}${widget.recipe.ingredients[index]['measurement']} of ${widget.recipe.ingredients[index]['name']}');
+                          }),
+                      thumbColor: Colors.amber,
+                    ),
                   ),
                   const Text('Instructions: '),
                   Expanded(
                     child: SizedBox(
                       height: 100,
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: widget.recipe.instructions.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Text('\u2022 ' +
-                                widget.recipe.instructions[index]['step']);
-                          }),
+                      child: RawScrollbar(
+                        child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: widget.recipe.instructions.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Text('\u2022 ' +
+                                  widget.recipe.instructions[index]['step']);
+                            }),
+                        thumbColor: Colors.amber,
+                      ),
                     ),
                   ),
                 ],
               ),
             )));
   }
-
-  showInstructions() {}
 }
