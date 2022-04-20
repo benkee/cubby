@@ -22,19 +22,19 @@ class FoodItem {
     _id = id;
   }
 
-  set setName(String name) {
+  setName(String name) {
     _name = name;
   }
 
-  set setType(int type) {
+  setType(int type) {
     _type = type;
   }
 
-  set setOpened(bool opened) {
+  setOpened(bool opened) {
     _opened = opened;
   }
 
-  set setExpires(DateTime expires) {
+  setExpires(DateTime expires) {
     _expires = expires;
   }
 

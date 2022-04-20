@@ -1,7 +1,6 @@
 import 'package:cubby/constants/constants.dart' as constants;
 import 'package:cubby/views/home/home.dart';
 import 'package:flutter/material.dart';
-
 import '../../models/recipe.dart';
 import '../../services/firebase_crud.dart';
 
@@ -67,6 +66,7 @@ class _RecipeInputState extends State<RecipeInput> {
               TextField(
                 controller: cost,
                 obscureText: false,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'cost',
@@ -76,6 +76,7 @@ class _RecipeInputState extends State<RecipeInput> {
               TextField(
                 controller: preparationTime,
                 obscureText: false,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'preparationTime',

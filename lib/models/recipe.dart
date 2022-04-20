@@ -20,23 +20,23 @@ class Recipe {
     _id = id;
   }
 
-  set setName(String name) {
+  setName(String name) {
     _name = name;
   }
 
-  set setIngredients(List<dynamic> ingredients) {
+  setIngredients(List<dynamic> ingredients) {
     _ingredients = ingredients;
   }
 
-  set setPreparationTime(int preparationTime) {
+  setPreparationTime(int preparationTime) {
     _preparationTime = preparationTime;
   }
 
-  set setInstructions(List<dynamic> instructions) {
+  setInstructions(List<dynamic> instructions) {
     _instructions = instructions;
   }
 
-  set setCost(int cost) {
+  setCost(int cost) {
     _cost = cost;
   }
 
