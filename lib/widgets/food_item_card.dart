@@ -21,7 +21,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
     return Card(
         color: Colors.lightGreen,
         elevation: 8,
-        margin: const EdgeInsets.all(15),
+        margin: const EdgeInsets.all(8),
         shape: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: Colors.lightGreen, width: 1)),
@@ -43,7 +43,9 @@ class _FoodItemCardState extends State<FoodItemCard> {
                           color: Colors.white,
                         ),
                       )),
-                      const SizedBox(width: 10,),
+                      const SizedBox(
+                        width: 10,
+                      ),
                       CircleAvatar(
                         backgroundImage: AssetImage(constants.foodTypeImage[0]),
                       ),

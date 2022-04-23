@@ -1,6 +1,6 @@
 const List<String> foodTypes = [
-  'Fruit',
-  'Vegetable',
+  'Fruits',
+  'Vegetables',
   'Meat',
   'Tinned',
   'Dairy',

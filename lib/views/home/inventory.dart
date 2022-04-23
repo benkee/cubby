@@ -1,8 +1,8 @@
+import 'package:cubby/widgets/food_item_expansion_tile.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
-import '../../widgets/food_item_card.dart';
 import '../../widgets/food_item_input.dart';
 
 class InventoryPage extends StatefulWidget {
@@ -30,15 +30,18 @@ class _InventoryPageState extends State<InventoryPage> {
               child: Text('Error gathering data: ${projectSnap.error}'),
             );
           } else {
-            return ListView.builder(
-                itemCount: (projectSnap.data as List<FoodItem>).length,
-                itemBuilder: (context, index) {
-                  List<FoodItem> foodItems = projectSnap.data as List<FoodItem>;
-                  return FoodItemCard(
-                    foodItem: foodItems[index],
-                    userID: widget.userID,
-                  );
-                });
+            List<FoodItem> foodItems = projectSnap.data as List<FoodItem>;
+            Map categorizedFoodItems = {};
+            List<Widget> expansionTiles = [];
+            for (int i = 0; i < 6; i++) {
+              categorizedFoodItems[i] =
+                  foodItems.where((element) => element.type == i).toList();
+              expansionTiles.add(FoodItemExpansionTile(
+                  type: i,
+                  foodItems: categorizedFoodItems[i],
+                  userID: widget.userID));
+            }
+            return ListView(children: expansionTiles);
           }
         },
         future: FirebaseCRUD.getFoodItems(widget.userID),
