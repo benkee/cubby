@@ -22,10 +22,15 @@ class FoodItemExpansionTile extends StatefulWidget {
 class _FoodItemExpansionTileState extends State<FoodItemExpansionTile> {
   @override
   Widget build(BuildContext context) {
-    print(widget.type);
-    print(widget.foodItems.toString());
     return ExpansionTile(
-        title: Text(constants.foodTypes[widget.type]),
+        title: Row(children: [
+          Text(constants.foodTypes[widget.type]),
+          const Spacer(),
+          CircleAvatar(
+            backgroundImage: AssetImage(constants.foodTypeImage[widget.type]),
+            radius: 30,
+          ),
+        ]),
         children: [
           ListView.builder(
               shrinkWrap: true,

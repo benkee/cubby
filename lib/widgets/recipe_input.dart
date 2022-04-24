@@ -1,6 +1,7 @@
 import 'package:cubby/constants/constants.dart' as constants;
 import 'package:cubby/views/home/home.dart';
 import 'package:flutter/material.dart';
+
 import '../../models/recipe.dart';
 import '../../services/firebase_crud.dart';
 
@@ -229,7 +230,7 @@ class _RecipeInputState extends State<RecipeInput> {
                     disabledBorder: InputBorder.none,
                     contentPadding: EdgeInsets.only(
                         left: 15, bottom: 11, top: 11, right: 15),
-                    hintText: "Amount"))),
+                    hintText: "Quantity"))),
         Expanded(
           child: DropdownButton<String>(
               alignment: Alignment.centerLeft,

@@ -19,5 +19,5 @@ const List<String> foodTypeImage = [
 const List<String> foodMeasurements = [
   'g',
   'ml',
-  'item',
+  'item/s',
 ];

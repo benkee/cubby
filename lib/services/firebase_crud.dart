@@ -74,7 +74,7 @@ class FirebaseCRUD {
     await firestore
         .collection(userID + 'FoodItem')
         .where('expires',
-            isLessThanOrEqualTo: DateTime.now().add(const Duration(days: 3)))
+            isLessThanOrEqualTo: DateTime.now().add(const Duration(days: 5)))
         .limit(5)
         .get()
         .then((querySnapshot) {

@@ -18,20 +18,37 @@ class FoodItemCard extends StatefulWidget {
 class _FoodItemCardState extends State<FoodItemCard> {
   @override
   Widget build(BuildContext context) {
+    ImageIcon openedIcon;
+    if (widget.foodItem.opened) {
+      openedIcon = const ImageIcon(
+        AssetImage('assets/images/openedtin.png'),
+        color: Colors.white,
+        size: 30,
+      );
+    } else {
+      openedIcon = const ImageIcon(
+        AssetImage('assets/images/closedtin.png'),
+        color: Colors.white,
+        size: 30,
+      );
+    }
+    List<String> expiry =
+        widget.foodItem.expires.toLocal().toString().split(' ')[0].split('-');
     return Card(
         color: Colors.lightGreen,
         elevation: 8,
         margin: const EdgeInsets.all(8),
         shape: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(20),
             borderSide: const BorderSide(color: Colors.lightGreen, width: 1)),
         child: Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-            height: 100,
+            height: 116,
             width: double.maxFinite,
             child: Align(
               alignment: Alignment.topLeft,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -41,43 +58,69 @@ class _FoodItemCardState extends State<FoodItemCard> {
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          fontSize: 25,
                         ),
                       )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      CircleAvatar(
-                        backgroundImage: AssetImage(constants.foodTypeImage[0]),
-                      ),
                       const Spacer(),
-                      IconButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) => FoodItemEdit(
-                                foodItem: widget.foodItem,
-                                userID: widget.userID,
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.edit)),
-                      IconButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    FoodItemDeleteCheck(
-                                      foodItem: widget.foodItem,
-                                      userID: widget.userID,
-                                    ));
-                          },
-                          icon: const Icon(Icons.delete)),
+                      openedIcon,
+                      const SizedBox(
+                        width: 20,
+                      )
                     ],
                   ),
-                  Text('Opened: ${widget.foodItem.opened}'),
-                  const Spacer(),
-                  Text('Expires: ' +
-                      "${widget.foodItem.expires.toLocal()}".split(' ')[0]),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  RichText(
+                      text: TextSpan(
+                    text: 'Expires: ${expiry[2]}/${expiry[1]}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 15,
+                    ),
+                  )),
+                  Row(
+                    children: [
+                      RichText(
+                          text: TextSpan(
+                        text:
+                            "Quantity: ${widget.foodItem.quantity} ${constants.foodMeasurements[widget.foodItem.measurement]}",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                      )),
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => FoodItemEdit(
+                              foodItem: widget.foodItem,
+                              userID: widget.userID,
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.edit),
+                        iconSize: 18,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  FoodItemDeleteCheck(
+                                    foodItem: widget.foodItem,
+                                    userID: widget.userID,
+                                  ));
+                        },
+                        icon: const Icon(Icons.delete),
+                        iconSize: 18,
+                      ),
+                    ],
+                  )
                 ],
               ),
             )));

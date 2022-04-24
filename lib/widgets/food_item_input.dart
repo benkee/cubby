@@ -14,15 +14,18 @@ class FoodItemInput extends StatefulWidget {
 }
 
 class _FoodItemInputState extends State<FoodItemInput> {
-  late String selectedFoodType = 'Fruit';
+  late String selectedFoodType = 'Fruits';
   late bool foodOpened = false;
   late DateTime foodExpiry = DateTime.now();
   final name = TextEditingController();
+  final quantity = TextEditingController();
+  late int measurement = 0;
 
   @override
   void dispose() {
     super.dispose();
     name.dispose();
+    quantity.dispose();
   }
 
   Future<void> foodExpiryInput(BuildContext context) async {
@@ -84,9 +87,8 @@ class _FoodItemInputState extends State<FoodItemInput> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
               CheckboxListTile(
-                  title: const Text('Food Opened?'),
+                  title: const Text('Food Opened: '),
                   activeColor: Colors.lightGreen,
                   value: foodOpened,
                   onChanged: (bool? value) {
@@ -94,7 +96,6 @@ class _FoodItemInputState extends State<FoodItemInput> {
                       foodOpened = value!;
                     });
                   }),
-              const SizedBox(height: 20),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -108,18 +109,53 @@ class _FoodItemInputState extends State<FoodItemInput> {
                   ),
                 ],
               ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 150,
+                    child: TextField(
+                      controller: quantity,
+                      obscureText: false,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Quantity',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20.0,
+                  ),
+                  Expanded(
+                    child: DropdownButton<String>(
+                        alignment: Alignment.centerLeft,
+                        dropdownColor: Colors.amber[300],
+                        items: constants.foodMeasurements.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        value: constants.foodMeasurements[measurement],
+                        onChanged: (String? newValue) {
+                          setState(() {});
+                          measurement =
+                              constants.foodMeasurements.indexOf(newValue!);
+                        }),
+                  ),
+                ],
+              )
             ]),
       ),
       actions: <Widget>[
         ElevatedButton(
           onPressed: () {
             int foodType = constants.foodTypes.indexOf(selectedFoodType);
-            FoodItem foodItem = FoodItem(
-              name.text,
-              foodType,
-              foodOpened,
-              foodExpiry,
-            );
+            FoodItem foodItem = FoodItem(name.text, foodType, foodOpened,
+                foodExpiry, int.parse(quantity.text), measurement);
             FirebaseCRUD.addFoodItem(foodItem, widget.userID);
             Navigator.pushReplacement(
               context,

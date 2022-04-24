@@ -1,5 +1,6 @@
 import 'package:cubby/views/home/inventory.dart';
 import 'package:cubby/views/home/recipes.dart';
+import 'package:cubby/widgets/food_item_expiring_card.dart';
 import 'package:cubby/widgets/recipe_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import '../../models/food_item.dart';
 import '../../models/recipe.dart';
 import '../../services/firebase_crud.dart';
-import '../../widgets/food_item_card.dart';
 
 class HomePage extends StatefulWidget {
   int selectedIndex;
@@ -104,7 +104,7 @@ class _HomePage extends State<HomePage> {
                 const SizedBox(height: 10),
                 const Text('Food expiring soon: '),
                 Container(
-                  height: 250,
+                  height: 200,
                   child: FutureBuilder(
                     builder: (context, projectSnap) {
                       if (projectSnap.connectionState ==
@@ -119,14 +119,14 @@ class _HomePage extends State<HomePage> {
                         );
                       } else {
                         return ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: false,
                             itemCount:
                                 (projectSnap.data as List<FoodItem>).length,
                             itemBuilder: (context, index) {
                               expiringFoodItems =
                                   projectSnap.data as List<FoodItem>;
-                              return FoodItemCard(
+                              return ExpiringFoodItemCard(
                                 foodItem: expiringFoodItems[index],
                                 userID: currentUID,
                               );
@@ -137,7 +137,7 @@ class _HomePage extends State<HomePage> {
                   ),
                 ),
                 const Text('Recommended Recipes: '),
-                Container(
+                SizedBox(
                   height: 300,
                   child: FutureBuilder(
                     builder: (context, projectSnap) {

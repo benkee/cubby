@@ -17,15 +17,18 @@ class FoodItemEdit extends StatefulWidget {
 
 class _FoodItemInputState extends State<FoodItemEdit> {
   final name = TextEditingController();
+  final quantity = TextEditingController();
   late String selectedFoodType =
       constants.foodTypes.elementAt(widget.foodItem.type);
   late DateTime foodExpiry = widget.foodItem.expires;
   late bool foodOpened = widget.foodItem.opened;
+  late int measurement = widget.foodItem.measurement;
 
   @override
   void dispose() {
     super.dispose();
     name.dispose();
+    quantity.dispose();
   }
 
   Future<void> foodExpiryInput(BuildContext context) async {
@@ -111,14 +114,53 @@ class _FoodItemInputState extends State<FoodItemEdit> {
                   ),
                 ],
               ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: quantity,
+                      obscureText: false,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        hintText: widget.foodItem.quantity.toString(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20.0,
+                  ),
+                  SizedBox(
+                    width: 70,
+                    child: DropdownButton<String>(
+                        alignment: Alignment.centerLeft,
+                        dropdownColor: Colors.amber[300],
+                        items: constants.foodMeasurements.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        value: constants.foodMeasurements[measurement],
+                        onChanged: (String? newValue) {
+                          setState(() {});
+                          measurement =
+                              constants.foodMeasurements.indexOf(newValue!);
+                        }),
+                  ),
+                ],
+              )
             ]),
       ),
       actions: <Widget>[
         ElevatedButton(
           onPressed: () {
             int foodType = constants.foodTypes.indexOf(selectedFoodType);
-            updateFoodItem(
-                widget.foodItem, name.text, foodType, foodOpened, foodExpiry);
+            updateFoodItem(widget.foodItem, name.text, foodType, foodOpened,
+                foodExpiry, quantity.text, measurement);
 
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => HomePage(0)));
@@ -143,8 +185,15 @@ class _FoodItemInputState extends State<FoodItemEdit> {
     );
   }
 
-  void updateFoodItem(FoodItem foodItem, String name, int foodType,
-      bool foodOpened, DateTime foodExpiry) {
+  void updateFoodItem(
+    FoodItem foodItem,
+    String name,
+    int foodType,
+    bool foodOpened,
+    DateTime foodExpiry,
+    String quantity,
+    int measurement,
+  ) {
     if (foodItem.name != name && name != '') {
       FirebaseCRUD.updateFoodItem(widget.foodItem, 'name', name, widget.userID);
     }
@@ -160,5 +209,11 @@ class _FoodItemInputState extends State<FoodItemEdit> {
       FirebaseCRUD.updateFoodItem(
           widget.foodItem, 'expires', foodExpiry, widget.userID);
     }
+    if(quantity != ''){
+      FirebaseCRUD.updateFoodItem(
+          widget.foodItem, 'quantity', int.parse(quantity), widget.userID);
+    }
+    FirebaseCRUD.updateFoodItem(
+        widget.foodItem, 'measurement', measurement, widget.userID);
   }
 }
