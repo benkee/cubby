@@ -134,7 +134,7 @@ class _FoodItemInputState extends State<FoodItemEdit> {
                     width: 20.0,
                   ),
                   SizedBox(
-                    width: 70,
+                    width: 75,
                     child: DropdownButton<String>(
                         alignment: Alignment.centerLeft,
                         dropdownColor: Colors.amber[300],
@@ -209,7 +209,7 @@ class _FoodItemInputState extends State<FoodItemEdit> {
       FirebaseCRUD.updateFoodItem(
           widget.foodItem, 'expires', foodExpiry, widget.userID);
     }
-    if(quantity != ''){
+    if (quantity != '') {
       FirebaseCRUD.updateFoodItem(
           widget.foodItem, 'quantity', int.parse(quantity), widget.userID);
     }

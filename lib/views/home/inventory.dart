@@ -41,7 +41,9 @@ class _InventoryPageState extends State<InventoryPage> {
                   foodItems: categorizedFoodItems[i],
                   userID: widget.userID));
             }
-            return ListView(children: expansionTiles);
+            return ListView(
+              children: expansionTiles,
+            );
           }
         },
         future: FirebaseCRUD.getFoodItems(widget.userID),

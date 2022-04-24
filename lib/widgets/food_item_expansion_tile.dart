@@ -34,6 +34,7 @@ class _FoodItemExpansionTileState extends State<FoodItemExpansionTile> {
         children: [
           ListView.builder(
               shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
               itemCount: widget.foodItems.length,
               itemBuilder: (context, index) {
                 try {

@@ -30,8 +30,6 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
         size: 20,
       );
     }
-    List<String> expiry =
-        widget.foodItem.expires.toLocal().toString().split(' ')[0].split('-');
     int daysRemaining =
         widget.foodItem.expires.toLocal().difference(DateTime.now()).inDays;
     Color? cardColor = Colors.lightGreen;
@@ -43,6 +41,7 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
         break;
       case 1:
         cardColor = Colors.red[400];
+        expiresText = 'Expires tomorrow';
         break;
       case 2:
         cardColor = Colors.orange[600];
