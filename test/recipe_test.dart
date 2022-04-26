@@ -6,7 +6,7 @@ main() {
   List<dynamic> ingredients = [];
   int preparationTime = 10;
   List<dynamic> instructions = [];
-  int cost = 3;
+  double cost = 3;
   Recipe recipe =
       Recipe(name, ingredients, preparationTime, instructions, cost);
 
@@ -23,7 +23,7 @@ main() {
     List<dynamic> newIngredients = [];
     int newPreparationTime = 20;
     List<dynamic> newInstructions = [];
-    int newCost = 4;
+    double newCost = 4;
 
     recipe.setName(newName);
     recipe.setIngredients(newIngredients);

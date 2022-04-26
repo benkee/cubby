@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/cubby_user.dart';
 import '../models/food_item.dart';
 import '../models/recipe.dart';
 
@@ -95,8 +96,9 @@ class FirebaseCRUD {
         Recipe recipe = Recipe.fromJson(document.data());
         for (Map ingredients in recipe.ingredients) {
           for (FoodItem foodItem in expiringFoodItems) {
-            if (ingredients['name'] == foodItem.name) {
-              if (!recipes.contains(recipe)) {
+            if ((ingredients['name'] as String).toLowerCase().trim() ==
+                foodItem.name.toLowerCase().trim()) {
+              if (recipes.length < 5 && !recipes.contains(recipe)) {
                 recipes.add(recipe);
                 recipe.setID(document.id.toString());
               }
@@ -125,5 +127,43 @@ class FirebaseCRUD {
         }
       }
     }
+  }
+
+  static Future<double> getUserPercentWasted(String userID) async {
+    double percentWasted = 0;
+    await firestore.collection(userID + 'User').get().then((querySnapshot) {
+      CubbyUser user = CubbyUser.fromJson(querySnapshot.docs.first.data());
+      percentWasted = user.percentWasted;
+    });
+    return percentWasted;
+  }
+
+  static void addUser(String userID, String name) async {
+    CubbyUser user = CubbyUser(userID, name, 1, 0, true);
+    firestore.collection(userID + 'User').add(user.toJson());
+  }
+
+  static Future<CubbyUser> getUser(String userID) async {
+    CubbyUser user = CubbyUser('', '', 1, 0, true);
+    await firestore.collection(userID + 'User').get().then((querySnapshot) {
+      user = CubbyUser.fromJson(querySnapshot.docs.first.data());
+    });
+    return user;
+  }
+
+  static void updateUserFoodWasted(String userID) {
+    CubbyUser cubbyUser = getUser(userID) as CubbyUser;
+    firestore
+        .collection(userID + 'User')
+        .doc()
+        .update({'foodWasted': cubbyUser.foodWasted + 1});
+  }
+
+  static void updateUserFoodUsed(String userID, int amount) {
+    CubbyUser cubbyUser = getUser(userID) as CubbyUser;
+    firestore
+        .collection(userID + 'User')
+        .doc()
+        .update({'foodUsed': cubbyUser.foodUsed + amount});
   }
 }

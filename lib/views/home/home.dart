@@ -1,3 +1,4 @@
+import 'package:cubby/models/cubby_user.dart';
 import 'package:cubby/views/home/inventory.dart';
 import 'package:cubby/views/home/recipes.dart';
 import 'package:cubby/widgets/food_item_expiring_card.dart';
@@ -16,11 +17,10 @@ class HomePage extends StatefulWidget {
   _HomePage createState() => _HomePage();
 }
 
+//todo: get user from firebase then update user display name and percentage
 class _HomePage extends State<HomePage> {
   PageController? _pageController;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  late String displayName =
-      FirebaseAuth.instance.currentUser?.displayName ?? '';
   late String currentUID = FirebaseAuth.instance.currentUser?.uid ?? '';
   User? user;
   bool userSignedIn = false;
@@ -73,10 +73,44 @@ class _HomePage extends State<HomePage> {
           width: 180,
           height: 160,
           padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-          alignment: Alignment.centerRight,
+          alignment: Alignment.center,
           child: Image.asset('assets/images/CubbyLogo.png'),
         ),
         actions: <Widget>[
+          FutureBuilder(
+              future: FirebaseCRUD.getUser(currentUID),
+              builder:
+                  (BuildContext context, AsyncSnapshot<CubbyUser> snapshot) {
+                if (snapshot.hasData) {
+                  CubbyUser cubbyUser = snapshot.data as CubbyUser;
+                  return Tooltip(
+                    triggerMode: TooltipTriggerMode.tap,
+                    decoration: BoxDecoration(color: Colors.amber[400]),
+                    message:
+                        'Total Food Wasted: ${cubbyUser.foodWasted}\nTotal Food Used: ${cubbyUser.foodUsed}',
+                    child: Column(children: [
+                      Text(
+                        'Welcome, ${cubbyUser.name}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.lightGreen,
+                          fontSize: 20,
+                        ),
+                      ),
+                      Text(
+                        'Food Waste: ${cubbyUser.percentWasted.toString()}%',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ]),
+                  );
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              }),
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
@@ -99,16 +133,7 @@ class _HomePage extends State<HomePage> {
             Center(
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                const SizedBox(height: 10),
-                Text(
-                  'Welcome, ' + displayName,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.lightGreen,
-                    fontSize: 25,
-                  ),
-                ),
-                const SizedBox(height: 10),
+                    const SizedBox(height: 10,),
                 const Text(
                   'Food expiring soon: ',
                   style: TextStyle(
@@ -117,9 +142,10 @@ class _HomePage extends State<HomePage> {
                     fontSize: 18,
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 200,
                   child: FutureBuilder(
+                    future: FirebaseCRUD.getExpiringFoodItems(currentUID),
                     builder: (context, projectSnap) {
                       if (projectSnap.connectionState ==
                           ConnectionState.waiting) {
@@ -132,7 +158,32 @@ class _HomePage extends State<HomePage> {
                               'Error gathering data: ${projectSnap.error}'),
                         );
                       } else {
-                        return ListView.builder(
+                        if ((projectSnap.data as List).isEmpty) {
+                          return Column(children: const [
+                            SizedBox(
+                              height: 50,
+                            ),
+                            SizedBox(
+                              height: 120,
+                              width: 300,
+                              child: Card(
+                                  color: Colors.lightGreen,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                      'Try adding food items in your inventory, items which are due to expire in the next 5 days will appear here.',
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  )),
+                            )
+                          ]);
+                        } else {
+                          return ListView.builder(
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: false,
                             itemCount:
@@ -144,10 +195,11 @@ class _HomePage extends State<HomePage> {
                                 foodItem: expiringFoodItems[index],
                                 userID: currentUID,
                               );
-                            });
+                            },
+                          );
+                        }
                       }
                     },
-                    future: FirebaseCRUD.getExpiringFoodItems(currentUID),
                   ),
                 ),
                 const Text(
@@ -173,19 +225,45 @@ class _HomePage extends State<HomePage> {
                               'Error gathering data: ${projectSnap.error}'),
                         );
                       } else {
-                        return ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount:
-                                (projectSnap.data as List<Recipe>).length,
-                            itemBuilder: (context, index) {
-                              List<Recipe> recipes =
-                                  projectSnap.data as List<Recipe>;
-                              return RecommendedRecipeCard(
-                                recipe: recipes[index],
-                                userID: currentUID,
-                              );
-                            });
+                        if ((projectSnap.data as List).isEmpty) {
+                          return Column(children: const [
+                            SizedBox(
+                              height: 50,
+                            ),
+                            SizedBox(
+                              height: 160,
+                              width: 300,
+                              child: Card(
+                                  color: Colors.lightGreen,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                      'Try adding a recipe to your recipes with an expiring food item as a ingredient, when a recipe has an expiring food item (in the next 5 days) as an ingredient it will appear here.',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  )),
+                            )
+                          ]);
+                        } else {
+                          return ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount:
+                                  (projectSnap.data as List<Recipe>).length,
+                              itemBuilder: (context, index) {
+                                List<Recipe> recipes =
+                                    projectSnap.data as List<Recipe>;
+                                return RecommendedRecipeCard(
+                                  recipe: recipes[index],
+                                  userID: currentUID,
+                                );
+                              });
+                        }
                       }
                     },
                     future: FirebaseCRUD.getRecommendedRecipes(

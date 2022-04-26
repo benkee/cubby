@@ -109,6 +109,8 @@ class _RecipeCookDisplayState extends State<RecipeCookDisplay> {
               onPressed: () {
                 FirebaseCRUD.updateFoodItemsFromRecipe(
                     widget.recipe, widget.userID);
+                FirebaseCRUD.updateUserFoodUsed(
+                    widget.userID, widget.recipe.ingredients.length);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomePage(1)));
               },

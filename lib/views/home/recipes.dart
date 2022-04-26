@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/recipe.dart';
@@ -31,7 +32,13 @@ class _RecipePageState extends State<RecipePage> {
           } else if (projectSnap.hasData &&
               (projectSnap.data as List<Recipe>).isEmpty) {
             return const Center(
-              child: Text('Try adding a recipe with the + button'),
+              child: Text(
+                'Try adding a recipe with the + button',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+              ),
             );
           } else {
             return ListView.builder(

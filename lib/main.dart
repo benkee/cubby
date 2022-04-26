@@ -2,6 +2,7 @@ import 'package:cubby/views/authenticate/sign_up.dart';
 import 'package:cubby/views/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
 import 'views/authenticate/sign_in.dart';
 
 void main() async {
@@ -17,7 +18,7 @@ class Cubby extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter',
+      title: 'Cubby',
       theme: ThemeData(
         primarySwatch: Colors.lightGreen,
         visualDensity: VisualDensity.adaptivePlatformDensity,

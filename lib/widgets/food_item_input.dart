@@ -20,6 +20,7 @@ class _FoodItemInputState extends State<FoodItemInput> {
   final name = TextEditingController();
   final quantity = TextEditingController();
   late int measurement = 0;
+  String warning = '';
 
   @override
   void dispose() {
@@ -55,6 +56,8 @@ class _FoodItemInputState extends State<FoodItemInput> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text(warning, style: const TextStyle(color: Colors.red)),
+              const SizedBox(height: 5,),
               TextField(
                 controller: name,
                 obscureText: false,
@@ -147,24 +150,30 @@ class _FoodItemInputState extends State<FoodItemInput> {
                         }),
                   ),
                 ],
-              )
+              ),
             ]),
       ),
       actions: <Widget>[
         ElevatedButton(
           onPressed: () {
-            int foodType = constants.foodTypes.indexOf(selectedFoodType);
-            FoodItem foodItem = FoodItem(name.text, foodType, foodOpened,
-                foodExpiry, int.parse(quantity.text), measurement);
-            FirebaseCRUD.addFoodItem(foodItem, widget.userID);
-            Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation1, animation2) => HomePage(0),
-                transitionDuration: Duration.zero,
-                reverseTransitionDuration: Duration.zero,
-              ),
-            );
+            if (name.text != '' && quantity.text != '') {
+              int foodType = constants.foodTypes.indexOf(selectedFoodType);
+              FoodItem foodItem = FoodItem(name.text, foodType, foodOpened,
+                  foodExpiry, int.parse(quantity.text), measurement);
+              FirebaseCRUD.addFoodItem(foodItem, widget.userID);
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation1, animation2) => HomePage(0),
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
+              );
+            } else {
+              setState(() {
+                warning = 'Please ensure the food item has a Name and Quantity';
+              });
+            }
           },
           child: const Text('Add Item', style: TextStyle(color: Colors.white)),
         ),

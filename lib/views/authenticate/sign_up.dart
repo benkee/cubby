@@ -1,3 +1,4 @@
+import 'package:cubby/services/firebase_crud.dart';
 import 'package:cubby/services/form_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,8 @@ class _SignUpPage extends State<SignUpPage> {
           await _auth.createUserWithEmailAndPassword(
               email: username.text, password: password.text);
       await _auth.currentUser!.updateDisplayName(firstName.text);
+      FirebaseCRUD.addUser(
+          _auth.currentUser?.uid.toString() ?? '', firstName.text);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         setState(() {

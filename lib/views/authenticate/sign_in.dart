@@ -17,7 +17,7 @@ class _SignInPage extends State<SignInPage> {
   checkCurrentUser() async {
     _auth.authStateChanges().listen((User? user) async {
       if (user != null) {
-        Navigator.pushReplacementNamed(context, "/");
+        Navigator.pushReplacementNamed(context, '/HomePage');
       }
     });
   }

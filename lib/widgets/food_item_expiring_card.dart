@@ -100,6 +100,7 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
                         onPressed: () {
                           FirebaseCRUD.deleteFoodItem(
                               widget.foodItem, widget.userID);
+                          FirebaseCRUD.updateUserFoodWasted(widget.userID);
                           Navigator.push(
                               context,
                               MaterialPageRoute(

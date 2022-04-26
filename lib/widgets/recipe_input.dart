@@ -24,6 +24,7 @@ class _RecipeInputState extends State<RecipeInput> {
   late List<Map<String, dynamic>> _ingredientValues;
   late List<Map<String, dynamic>> _instructionsValues;
   late String result;
+  String warning = '';
 
   @override
   void initState() {
@@ -70,7 +71,7 @@ class _RecipeInputState extends State<RecipeInput> {
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'cost',
+                  hintText: 'Cost in £',
                 ),
               ),
               const SizedBox(height: 20),
@@ -80,10 +81,12 @@ class _RecipeInputState extends State<RecipeInput> {
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'preparationTime',
+                  hintText: 'Preparation Time in Minutes',
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
+              Text(warning, style: const TextStyle(color: Colors.red)),
+              const SizedBox(height: 10),
               //const RecipeIngredientsInput(),
               Row(
                 children: [
@@ -168,22 +171,30 @@ class _RecipeInputState extends State<RecipeInput> {
       actions: <Widget>[
         ElevatedButton(
           onPressed: () {
-            Recipe recipe = Recipe(
-              name.text,
-              _ingredientValues,
-              int.parse(preparationTime.text),
-              _instructionsValues,
-              int.parse(cost.text),
-            );
-            FirebaseCRUD.addRecipe(recipe, widget.userID);
-            Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation1, animation2) => HomePage(2),
-                transitionDuration: Duration.zero,
-                reverseTransitionDuration: Duration.zero,
-              ),
-            );
+            if (int.tryParse(preparationTime.text) != null &&
+                double.tryParse(cost.text) != null) {
+              Recipe recipe = Recipe(
+                name.text,
+                _ingredientValues,
+                int.parse(preparationTime.text),
+                _instructionsValues,
+                double.parse(cost.text),
+              );
+              FirebaseCRUD.addRecipe(recipe, widget.userID);
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation1, animation2) => HomePage(2),
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
+              );
+            } else {
+              setState(() {
+                warning =
+                    'Please ensure the preparation time is a whole number and cost is a valid decimal or whole number';
+              });
+            }
           },
           child:
               const Text('Add Recipe', style: TextStyle(color: Colors.white)),
