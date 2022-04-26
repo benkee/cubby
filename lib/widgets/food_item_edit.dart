@@ -35,8 +35,8 @@ class _FoodItemInputState extends State<FoodItemEdit> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: foodExpiry,
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2101));
+        firstDate: foodExpiry,
+        lastDate: DateTime.now().add(const Duration(days: 365)));
     if (picked != null && picked != foodExpiry) {
       setState(() {
         foodExpiry = picked;

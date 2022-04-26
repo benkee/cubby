@@ -96,13 +96,34 @@ class FirebaseCRUD {
         for (Map ingredients in recipe.ingredients) {
           for (FoodItem foodItem in expiringFoodItems) {
             if (ingredients['name'] == foodItem.name) {
-              recipes.add(recipe);
-              recipe.setID(document.id.toString());
+              if (!recipes.contains(recipe)) {
+                recipes.add(recipe);
+                recipe.setID(document.id.toString());
+              }
             }
           }
         }
       }
     });
     return recipes;
+  }
+
+  static void updateFoodItemsFromRecipe(Recipe recipe, String userID) async {
+    Future<List<FoodItem>> foodItemsFuture = getFoodItems(userID);
+    List<FoodItem> foodItems = await foodItemsFuture;
+    for (FoodItem foodItem in foodItems) {
+      for (Map recipeIngredient in recipe.ingredients) {
+        if (foodItem.name == recipeIngredient['name']) {
+          int quantity = foodItem.quantity;
+          foodItem
+              .setQuantity(quantity -= int.parse(recipeIngredient['amount']));
+          if (foodItem.quantity <= 0) {
+            deleteFoodItem(foodItem, userID);
+          } else {
+            updateFoodItem(foodItem, 'quantity', foodItem.quantity, userID);
+          }
+        }
+      }
+    }
   }
 }

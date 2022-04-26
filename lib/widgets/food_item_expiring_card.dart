@@ -1,7 +1,9 @@
 import 'package:cubby/constants/constants.dart' as constants;
+import 'package:cubby/services/firebase_crud.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/food_item.dart';
+import '../views/home/home.dart';
 
 // ignore: must_be_immutable
 class ExpiringFoodItemCard extends StatefulWidget {
@@ -16,29 +18,11 @@ class ExpiringFoodItemCard extends StatefulWidget {
 class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
   @override
   Widget build(BuildContext context) {
-    ImageIcon openedIcon;
-    if (widget.foodItem.opened) {
-      openedIcon = const ImageIcon(
-        AssetImage('assets/images/openedtin.png'),
-        color: Colors.white,
-        size: 20,
-      );
-    } else {
-      openedIcon = const ImageIcon(
-        AssetImage('assets/images/closedtin.png'),
-        color: Colors.white,
-        size: 20,
-      );
-    }
     int daysRemaining =
         widget.foodItem.expires.toLocal().difference(DateTime.now()).inDays;
     Color? cardColor = Colors.lightGreen;
     String expiresText = 'Expires in $daysRemaining days';
     switch (daysRemaining) {
-      case 0:
-        cardColor = Colors.red[500];
-        expiresText = 'Expired';
-        break;
       case 1:
         cardColor = Colors.red[400];
         expiresText = 'Expires tomorrow';
@@ -52,16 +36,21 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
       case 4:
         cardColor = Colors.yellow[600];
         break;
-      default:
+      case 5:
         cardColor = Colors.yellow[400];
+        break;
+      default:
+        cardColor = Colors.red[500];
+        expiresText = 'Expired';
+        break;
     }
 
-    return Container(
-        width: 150,
-        height: 150,
+    return SizedBox(
+        width: 170,
+        height: 170,
         child: Card(
             color: cardColor,
-            elevation: 18,
+            elevation: 5,
             margin: const EdgeInsets.all(8),
             shape: const CircleBorder(),
             child: Container(
@@ -73,7 +62,6 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      openedIcon,
                       RichText(
                           text: TextSpan(
                         text: widget.foodItem.name,
@@ -108,6 +96,21 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
                           fontSize: 15,
                         ),
                       )),
+                      IconButton(
+                        onPressed: () {
+                          FirebaseCRUD.deleteFoodItem(
+                              widget.foodItem, widget.userID);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage(1)));
+                        },
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
+                        iconSize: 25,
+                      ),
                     ],
                   ),
                 ))));

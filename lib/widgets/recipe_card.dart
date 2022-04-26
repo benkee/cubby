@@ -1,8 +1,6 @@
 import 'package:cubby/widgets/recipe_delete_check.dart';
 import 'package:cubby/widgets/recipe_edit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 import '../../models/recipe.dart';
 
@@ -45,26 +43,30 @@ class _RecipeCardState extends State<RecipeCard> {
                 )),
                 const Spacer(),
                 IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => RecipeEdit(
-                          recipe: widget.recipe,
-                          userID: widget.userID,
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.edit)),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => RecipeEdit(
+                        recipe: widget.recipe,
+                        userID: widget.userID,
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.edit),
+                  color: Colors.white,
+                ),
                 IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) => RecipeDeleteCheck(
-                                recipe: widget.recipe,
-                                userID: widget.userID,
-                              ));
-                    },
-                    icon: const Icon(Icons.delete)),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) => RecipeDeleteCheck(
+                              recipe: widget.recipe,
+                              userID: widget.userID,
+                            ));
+                  },
+                  icon: const Icon(Icons.delete),
+                  color: Colors.white,
+                ),
               ],
             ),
             Row(children: [
@@ -72,13 +74,13 @@ class _RecipeCardState extends State<RecipeCard> {
                 children: [
                   RichText(
                       text: const TextSpan(
-                        text: 'Instructions: ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      )),
+                    text: 'Instructions: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 22,
+                    ),
+                  )),
                   SizedBox(
                     width: 140,
                     height: 80,
@@ -87,8 +89,15 @@ class _RecipeCardState extends State<RecipeCard> {
                           scrollDirection: Axis.vertical,
                           itemCount: widget.recipe.instructions.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return Text('\u2022 ' +
-                                widget.recipe.instructions[index]['step']);
+                            return Text(
+                              '\u2022 ' +
+                                  widget.recipe.instructions[index]['step'],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            );
                           }),
                       thumbColor: Colors.amber,
                     ),
@@ -106,7 +115,7 @@ class _RecipeCardState extends State<RecipeCard> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: 22,
                     ),
                   )),
                   SizedBox(
@@ -118,7 +127,13 @@ class _RecipeCardState extends State<RecipeCard> {
                           itemCount: widget.recipe.ingredients.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Text(
-                                '\u2022  ${widget.recipe.ingredients[index]['amount']}${widget.recipe.ingredients[index]['measurement']} of ${widget.recipe.ingredients[index]['name']}');
+                              '\u2022  ${widget.recipe.ingredients[index]['amount']} ${widget.recipe.ingredients[index]['measurement']} of ${widget.recipe.ingredients[index]['name']}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            );
                           }),
                       thumbColor: Colors.amber,
                     ),
@@ -126,7 +141,9 @@ class _RecipeCardState extends State<RecipeCard> {
                 ],
               ),
             ]),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               RichText(
                   text: TextSpan(

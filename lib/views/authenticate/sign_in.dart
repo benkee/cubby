@@ -70,7 +70,7 @@ class _SignInPage extends State<SignInPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        color: Colors.amber[300],
+        color: Colors.amber[400],
         padding: const EdgeInsets.all(25),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,

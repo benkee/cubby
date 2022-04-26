@@ -1,7 +1,7 @@
 import 'package:cubby/views/home/inventory.dart';
 import 'package:cubby/views/home/recipes.dart';
 import 'package:cubby/widgets/food_item_expiring_card.dart';
-import 'package:cubby/widgets/recipe_card.dart';
+import 'package:cubby/widgets/recommended_recipe_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -100,9 +100,23 @@ class _HomePage extends State<HomePage> {
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                 const SizedBox(height: 10),
-                Text('Welcome, ' + displayName),
+                Text(
+                  'Welcome, ' + displayName,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.lightGreen,
+                    fontSize: 25,
+                  ),
+                ),
                 const SizedBox(height: 10),
-                const Text('Food expiring soon: '),
+                const Text(
+                  'Food expiring soon: ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
                 Container(
                   height: 200,
                   child: FutureBuilder(
@@ -136,7 +150,14 @@ class _HomePage extends State<HomePage> {
                     future: FirebaseCRUD.getExpiringFoodItems(currentUID),
                   ),
                 ),
-                const Text('Recommended Recipes: '),
+                const Text(
+                  'Recommended Recipes: ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
                 SizedBox(
                   height: 300,
                   child: FutureBuilder(
@@ -160,7 +181,7 @@ class _HomePage extends State<HomePage> {
                             itemBuilder: (context, index) {
                               List<Recipe> recipes =
                                   projectSnap.data as List<Recipe>;
-                              return RecipeCard(
+                              return RecommendedRecipeCard(
                                 recipe: recipes[index],
                                 userID: currentUID,
                               );

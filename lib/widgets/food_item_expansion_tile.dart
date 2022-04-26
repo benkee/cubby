@@ -23,8 +23,18 @@ class _FoodItemExpansionTileState extends State<FoodItemExpansionTile> {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
+        iconColor: Colors.white,
+        backgroundColor: Colors.amber[250],
+        collapsedBackgroundColor: Colors.amber[350],
         title: Row(children: [
-          Text(constants.foodTypes[widget.type]),
+          Text(
+            constants.foodTypes[widget.type],
+            style: const TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Colors.white,
+              fontSize: 35,
+            ),
+          ),
           const Spacer(),
           CircleAvatar(
             backgroundImage: AssetImage(constants.foodTypeImage[widget.type]),

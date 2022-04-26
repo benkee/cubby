@@ -104,6 +104,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                           );
                         },
                         icon: const Icon(Icons.edit),
+                        color: Colors.white,
                         iconSize: 18,
                       ),
                       IconButton(
@@ -117,6 +118,7 @@ class _FoodItemCardState extends State<FoodItemCard> {
                                   ));
                         },
                         icon: const Icon(Icons.delete),
+                        color: Colors.white,
                         iconSize: 18,
                       ),
                     ],
