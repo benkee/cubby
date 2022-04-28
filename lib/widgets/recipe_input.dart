@@ -171,8 +171,15 @@ class _RecipeInputState extends State<RecipeInput> {
       actions: <Widget>[
         ElevatedButton(
           onPressed: () {
+            bool ingredientsValid = true;
+            for (Map ingredient in _ingredientValues) {
+              if (ingredient['name'] == null || ingredient['amount'] == null) {
+                ingredientsValid = false;
+              }
+            }
             if (int.tryParse(preparationTime.text) != null &&
-                double.tryParse(cost.text) != null) {
+                double.tryParse(cost.text) != null &&
+                ingredientsValid) {
               Recipe recipe = Recipe(
                 name.text,
                 _ingredientValues,
@@ -192,7 +199,7 @@ class _RecipeInputState extends State<RecipeInput> {
             } else {
               setState(() {
                 warning =
-                    'Please ensure the preparation time is a whole number and cost is a valid decimal or whole number';
+                    'Please ensure:\n - Preparation Time is a whole number\n - Cost is a valid decimal or whole number\n - Ingredients have a name and quantity';
               });
             }
           },

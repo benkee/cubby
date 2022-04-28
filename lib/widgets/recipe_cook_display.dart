@@ -47,18 +47,25 @@ class _RecipeCookDisplayState extends State<RecipeCookDisplay> {
               width: 280,
               height: 100,
               child: RawScrollbar(
-                child: ListView.builder(
-                    itemCount: widget.recipe.ingredients.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Text(
-                        '\u2022  ${widget.recipe.ingredients[index]['amount']} ${widget.recipe.ingredients[index]['measurement']} of ${widget.recipe.ingredients[index]['name']}',
-                        style: const TextStyle(
+                child: widget.recipe.ingredients.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: widget.recipe.ingredients.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Text(
+                            '\u2022  ${widget.recipe.ingredients[index]['amount']} ${widget.recipe.ingredients[index]['measurement']} of ${widget.recipe.ingredients[index]['name']}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          );
+                        })
+                    : const Text('No Instructions',
+                        style: TextStyle(
                           fontWeight: FontWeight.normal,
                           color: Colors.white,
                           fontSize: 18,
-                        ),
-                      );
-                    }),
+                        )),
                 thumbColor: Colors.amber,
               ),
             ),
@@ -81,19 +88,27 @@ class _RecipeCookDisplayState extends State<RecipeCookDisplay> {
               width: 280,
               height: 140,
               child: RawScrollbar(
-                child: ListView.builder(
-                    itemCount: widget.recipe.instructions.length,
-                    primary: false,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Text(
-                        '\u2022 ' + widget.recipe.instructions[index]['step'],
-                        style: const TextStyle(
+                child: widget.recipe.instructions.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: widget.recipe.instructions.length,
+                        primary: false,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Text(
+                            '\u2022 ' +
+                                widget.recipe.instructions[index]['step'],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          );
+                        })
+                    : const Text('No Instructions',
+                        style: TextStyle(
                           fontWeight: FontWeight.normal,
                           color: Colors.white,
                           fontSize: 18,
-                        ),
-                      );
-                    }),
+                        )),
                 thumbColor: Colors.amber,
               ),
             ),
@@ -111,8 +126,10 @@ class _RecipeCookDisplayState extends State<RecipeCookDisplay> {
                     widget.recipe, widget.userID);
                 FirebaseCRUD.updateUserFoodUsed(
                     widget.userID, widget.recipe.ingredients.length);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage(1)));
+                // Navigator.push(context,
+                //         MaterialPageRoute(builder: (context) => HomePage(1)))
+                //     .then((_) => setState(() {}));
+                Navigator.pop(context);
               },
               child: const Text('Finished Cooking',
                   style: TextStyle(color: Colors.white)),

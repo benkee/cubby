@@ -113,22 +113,23 @@ class _RecommendedRecipeCardState extends State<RecommendedRecipeCard> {
               height: 5,
             ),
             ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) => RecipeCookDisplay(
-                            recipe: widget.recipe,
-                            userID: widget.userID,
-                          ));
-                },
-                child: const Text(
-                  'COOK',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 25,
-                  ),
-                ))
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => RecipeCookDisplay(
+                          recipe: widget.recipe,
+                          userID: widget.userID,
+                        ));
+              },
+              child: const Text(
+                'COOK',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+              ),
+            ),
           ]),
         ));
   }

@@ -32,8 +32,30 @@ class _FoodItemCardState extends State<FoodItemCard> {
         size: 30,
       );
     }
-    List<String> expiry =
-        widget.foodItem.expires.toLocal().toString().split(' ')[0].split('-');
+    String expiry;
+    Color? expiryColor;
+    if ((widget.foodItem.expires.toLocal().difference(DateTime.now()).inHours /
+                24)
+            .ceil() <
+        0) {
+      expiry = 'Expired';
+      expiryColor = Colors.red;
+    } else if ((widget.foodItem.expires
+                    .toLocal()
+                    .difference(DateTime.now())
+                    .inHours /
+                24)
+            .ceil() ==
+        0) {
+      expiry = 'Expires Today';
+      expiryColor = Colors.red[400];
+    } else {
+      List<String> expiresToSplit =
+          widget.foodItem.expires.toLocal().toString().split(' ')[0].split('-');
+      expiry = '${expiresToSplit[2]}/${expiresToSplit[1]}';
+      expiryColor = Colors.white;
+    }
+
     return Card(
         color: Colors.lightGreen,
         elevation: 8,
@@ -73,10 +95,10 @@ class _FoodItemCardState extends State<FoodItemCard> {
                   ),
                   RichText(
                       text: TextSpan(
-                    text: 'Expires: ${expiry[2]}/${expiry[1]}',
-                    style: const TextStyle(
+                    text: expiry,
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: expiryColor,
                       fontSize: 15,
                     ),
                   )),

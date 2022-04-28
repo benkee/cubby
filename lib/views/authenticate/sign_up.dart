@@ -32,12 +32,15 @@ class _SignUpPage extends State<SignUpPage> {
 
   void signUp() async {
     try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-              email: username.text, password: password.text);
-      await _auth.currentUser!.updateDisplayName(firstName.text);
-      FirebaseCRUD.addUser(
-          _auth.currentUser?.uid.toString() ?? '', firstName.text);
+      await _auth
+          .createUserWithEmailAndPassword(
+              email: username.text, password: password.text)
+          .then((result) {
+        UserCredential userCredential = result;
+        userCredential.user?.updateDisplayName(firstName.text);
+        FirebaseCRUD.addUser(
+            userCredential.user?.uid.toString() ?? '', firstName.text);
+      });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         setState(() {
@@ -49,6 +52,7 @@ class _SignUpPage extends State<SignUpPage> {
         });
       }
     } catch (e) {
+      print('FAILED TO CREATE USER ...............');
       print(e);
     }
   }

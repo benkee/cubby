@@ -36,6 +36,8 @@ class _InventoryPageState extends State<InventoryPage> {
             for (int i = 0; i < 6; i++) {
               categorizedFoodItems[i] =
                   foodItems.where((element) => element.type == i).toList();
+              categorizedFoodItems[i].sort((a, b) =>
+                  (a.expires.toString()).compareTo(b.expires.toString()));
               expansionTiles.add(FoodItemExpansionTile(
                   type: i,
                   foodItems: categorizedFoodItems[i],

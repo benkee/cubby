@@ -133,7 +133,9 @@ class _HomePage extends State<HomePage> {
             Center(
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 const Text(
                   'Food expiring soon: ',
                   style: TextStyle(
@@ -211,7 +213,7 @@ class _HomePage extends State<HomePage> {
                   ),
                 ),
                 SizedBox(
-                  height: 300,
+                  height: 370,
                   child: FutureBuilder(
                     builder: (context, projectSnap) {
                       if (projectSnap.connectionState ==

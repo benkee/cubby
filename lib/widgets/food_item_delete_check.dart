@@ -20,15 +20,10 @@ class _FoodItemDeleteCheckState extends State<FoodItemDeleteCheck> {
     return AlertDialog(
       backgroundColor: Colors.amber[300],
       title: Text(
-        'Delete ${widget.foodItem.name}',
+        'Are you sure you want\nto remove ${widget.foodItem.name}',
         style: const TextStyle(color: Colors.white),
         overflow: TextOverflow.ellipsis,
-      ),
-      content: SingleChildScrollView(
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[]),
+        textAlign: TextAlign.center,
       ),
       actions: <Widget>[
         ElevatedButton(

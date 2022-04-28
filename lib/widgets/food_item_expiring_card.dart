@@ -1,9 +1,10 @@
 import 'package:cubby/constants/constants.dart' as constants;
-import 'package:cubby/services/firebase_crud.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../models/food_item.dart';
-import '../views/home/home.dart';
+import 'food_item_freeze_check.dart';
+import 'food_item_waste_check.dart';
 
 // ignore: must_be_immutable
 class ExpiringFoodItemCard extends StatefulWidget {
@@ -19,13 +20,19 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
   @override
   Widget build(BuildContext context) {
     int daysRemaining =
-        widget.foodItem.expires.toLocal().difference(DateTime.now()).inDays;
+        (widget.foodItem.expires.toLocal().difference(DateTime.now()).inHours /
+                24)
+            .ceil();
     Color? cardColor = Colors.lightGreen;
     String expiresText = 'Expires in $daysRemaining days';
+    //print(daysRemaining);
     switch (daysRemaining) {
+      case 0:
+        cardColor = Colors.red[600];
+        expiresText = 'Expires today';
+        break;
       case 1:
         cardColor = Colors.red[400];
-        expiresText = 'Expires tomorrow';
         break;
       case 2:
         cardColor = Colors.orange[600];
@@ -43,6 +50,10 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
         cardColor = Colors.red[500];
         expiresText = 'Expired';
         break;
+    }
+    if (daysRemaining > 5) {
+      cardColor = Colors.lightGreen[400];
+      expiresText = 'Expires in $daysRemaining days';
     }
 
     return SizedBox(
@@ -96,21 +107,43 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
                           fontSize: 15,
                         ),
                       )),
-                      IconButton(
-                        onPressed: () {
-                          FirebaseCRUD.deleteFoodItem(
-                              widget.foodItem, widget.userID);
-                          FirebaseCRUD.updateUserFoodWasted(widget.userID);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage(1)));
-                        },
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.white,
-                        ),
-                        iconSize: 25,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      FoodItemFreezeCheck(
+                                        foodItem: widget.foodItem,
+                                        userID: widget.userID,
+                                      ));
+                            },
+                            icon: const FaIcon(
+                              FontAwesomeIcons.snowflake,
+                              size: 25,
+                              color: Colors.white,
+                            ),
+                            iconSize: 25,
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      FoodItemWasteCheck(
+                                        foodItem: widget.foodItem,
+                                        userID: widget.userID,
+                                      ));
+                            },
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                            ),
+                            iconSize: 25,
+                          ),
+                        ],
                       ),
                     ],
                   ),

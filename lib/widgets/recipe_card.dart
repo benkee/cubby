@@ -1,6 +1,8 @@
+import 'package:cubby/widgets/recipe_cook_display.dart';
 import 'package:cubby/widgets/recipe_delete_check.dart';
 import 'package:cubby/widgets/recipe_edit.dart';
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 
 import '../../models/recipe.dart';
 
@@ -83,7 +85,7 @@ class _RecipeCardState extends State<RecipeCard> {
                   )),
                   SizedBox(
                     width: 140,
-                    height: 80,
+                    height: 55,
                     child: RawScrollbar(
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
@@ -120,7 +122,7 @@ class _RecipeCardState extends State<RecipeCard> {
                   )),
                   SizedBox(
                     width: 140,
-                    height: 80,
+                    height: 55,
                     child: RawScrollbar(
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
@@ -145,6 +147,25 @@ class _RecipeCardState extends State<RecipeCard> {
               height: 10,
             ),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => RecipeCookDisplay(
+                            recipe: widget.recipe,
+                            userID: widget.userID,
+                          ));
+                },
+                child: const Text(
+                  'COOK',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              const Spacer(),
               RichText(
                   text: TextSpan(
                 text: '£${widget.recipe.cost.toString()}',
@@ -167,17 +188,51 @@ class _RecipeCardState extends State<RecipeCard> {
                 ),
               )),
               RichText(
-                  textAlign: TextAlign.justify,
-                  text: const TextSpan(
-                    text: ' mins',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  )),
+                textAlign: TextAlign.justify,
+                text: const TextSpan(
+                  text: ' mins',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: () async {
+                  await Share.share(convertRecipeToShareableString());
+                },
+                icon: const Icon(Icons.share),
+                color: Colors.white,
+              ),
             ]),
           ]),
         ));
+  }
+
+  String convertRecipeToShareableString() {
+    String shareableString;
+    String ingredientsString = '';
+    String instructionsString = '';
+    for (Map ingredient in widget.recipe.ingredients) {
+      ingredientsString +=
+          '\n\u2022 ${ingredient['amount']} ${ingredient['measurement']} of ${ingredient['name']}';
+    }
+    for (Map instructions in widget.recipe.instructions) {
+      instructionsString +=
+          '\n\u2022 Step ${instructions['id'] + 1}: ${instructions['step']}';
+    }
+    shareableString = 'My Cubby Recipe:\nName: ' +
+        widget.recipe.name +
+        '\nPreparation Time: ' +
+        widget.recipe.preparationTime.toString() +
+        '\nCost: ' +
+        widget.recipe.cost.toString() +
+        '\nIngredients: ' +
+        ingredientsString +
+        '\nInstructions: ' +
+        instructionsString;
+    return shareableString;
   }
 }

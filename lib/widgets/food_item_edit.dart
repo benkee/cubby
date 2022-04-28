@@ -164,6 +164,7 @@ class _FoodItemInputState extends State<FoodItemEdit> {
 
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => HomePage(0)));
+            setState(() {});
           },
           child: const Text('Edit Item', style: TextStyle(color: Colors.white)),
         ),

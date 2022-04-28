@@ -74,8 +74,7 @@ class FirebaseCRUD {
     List<FoodItem> foodItems = [];
     await firestore
         .collection(userID + 'FoodItem')
-        .where('expires',
-            isLessThanOrEqualTo: DateTime.now().add(const Duration(days: 5)))
+        .orderBy('expires')
         .limit(5)
         .get()
         .then((querySnapshot) {
@@ -113,24 +112,31 @@ class FirebaseCRUD {
   static void updateFoodItemsFromRecipe(Recipe recipe, String userID) async {
     Future<List<FoodItem>> foodItemsFuture = getFoodItems(userID);
     List<FoodItem> foodItems = await foodItemsFuture;
-    for (FoodItem foodItem in foodItems) {
-      for (Map recipeIngredient in recipe.ingredients) {
-        if (foodItem.name == recipeIngredient['name']) {
+    foodItems
+        .sort((a, b) => (a.expires.toString()).compareTo(b.expires.toString()));
+    for (Map recipeIngredient in recipe.ingredients) {
+      bool recipeFoodItemRemoved = true;
+      for (FoodItem foodItem in foodItems) {
+        if ((foodItem.name).toLowerCase().trim() ==
+                (recipeIngredient['name']).toLowerCase().trim() &&
+            recipeFoodItemRemoved) {
           int quantity = foodItem.quantity;
           foodItem
               .setQuantity(quantity -= int.parse(recipeIngredient['amount']));
           if (foodItem.quantity <= 0) {
+            recipeIngredient['amount'] = (0 - quantity).toString();
             deleteFoodItem(foodItem, userID);
           } else {
             updateFoodItem(foodItem, 'quantity', foodItem.quantity, userID);
+            recipeFoodItemRemoved = false;
           }
         }
       }
     }
   }
 
-  static Future<double> getUserPercentWasted(String userID) async {
-    double percentWasted = 0;
+  static Future<String> getUserPercentWasted(String userID) async {
+    String percentWasted = '0';
     await firestore.collection(userID + 'User').get().then((querySnapshot) {
       CubbyUser user = CubbyUser.fromJson(querySnapshot.docs.first.data());
       percentWasted = user.percentWasted;
@@ -140,7 +146,7 @@ class FirebaseCRUD {
 
   static void addUser(String userID, String name) async {
     CubbyUser user = CubbyUser(userID, name, 1, 0, true);
-    firestore.collection(userID + 'User').add(user.toJson());
+    firestore.collection(userID + 'User').doc('userData').set(user.toJson());
   }
 
   static Future<CubbyUser> getUser(String userID) async {
@@ -152,18 +158,22 @@ class FirebaseCRUD {
   }
 
   static void updateUserFoodWasted(String userID) {
-    CubbyUser cubbyUser = getUser(userID) as CubbyUser;
-    firestore
-        .collection(userID + 'User')
-        .doc()
-        .update({'foodWasted': cubbyUser.foodWasted + 1});
+    getUser(userID).then((result) {
+      CubbyUser cubbyUser = result;
+      firestore
+          .collection(userID + 'User')
+          .doc('userData')
+          .update({'foodWasted': cubbyUser.foodWasted + 1});
+    });
   }
 
   static void updateUserFoodUsed(String userID, int amount) {
-    CubbyUser cubbyUser = getUser(userID) as CubbyUser;
-    firestore
-        .collection(userID + 'User')
-        .doc()
-        .update({'foodUsed': cubbyUser.foodUsed + amount});
+    getUser(userID).then((result) {
+      CubbyUser cubbyUser = result;
+      firestore
+          .collection(userID + 'User')
+          .doc('userData')
+          .update({'foodUsed': (cubbyUser.foodUsed + amount)});
+    });
   }
 }
