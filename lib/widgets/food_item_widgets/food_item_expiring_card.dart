@@ -110,23 +110,25 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      FoodItemFreezeCheck(
-                                        foodItem: widget.foodItem,
-                                        userID: widget.userID,
-                                      ));
-                            },
-                            icon: const FaIcon(
-                              FontAwesomeIcons.snowflake,
-                              size: 25,
-                              color: Colors.white,
-                            ),
-                            iconSize: 25,
-                          ),
+                          widget.foodItem.type != 5
+                              ? IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            FoodItemFreezeCheck(
+                                              foodItem: widget.foodItem,
+                                              userID: widget.userID,
+                                            ));
+                                  },
+                                  icon: const FaIcon(
+                                    FontAwesomeIcons.snowflake,
+                                    size: 25,
+                                    color: Colors.white,
+                                  ),
+                                  iconSize: 25,
+                                ) as Widget
+                              : Container(),
                           IconButton(
                             onPressed: () {
                               showDialog(
