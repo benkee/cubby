@@ -1,10 +1,10 @@
-import 'package:cubby/widgets/recipe_cook_display.dart';
-import 'package:cubby/widgets/recipe_delete_check.dart';
-import 'package:cubby/widgets/recipe_edit.dart';
+import 'package:cubby/widgets/recipe_widgets/recipe_cook_display.dart';
+import 'package:cubby/widgets/recipe_widgets/recipe_delete_check.dart';
+import 'package:cubby/widgets/recipe_widgets/recipe_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 
-import '../../models/recipe.dart';
+import '../../../models/recipe.dart';
 
 // ignore: must_be_immutable
 class RecipeCard extends StatefulWidget {

@@ -92,21 +92,25 @@ class _RecipeInputState extends State<RecipeInput> {
                 children: [
                   const Text('Add Ingredients: '),
                   IconButton(
-                      onPressed: () async {
-                        setState(() {
-                          _ingredientsCount++;
-                        });
-                      },
-                      icon: const Icon(Icons.add)),
+                    onPressed: () async {
+                      setState(() {
+                        _ingredientsCount++;
+                      });
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
                   IconButton(
-                      onPressed: () async {
-                        setState(() {
+                    onPressed: () async {
+                      setState(
+                        () {
                           if (_ingredientsCount > 1) {
                             _ingredientsCount--;
                           }
-                        });
-                      },
-                      icon: const Icon(Icons.delete)),
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.delete),
+                  ),
                 ],
               ),
               SizedBox(
@@ -127,26 +131,30 @@ class _RecipeInputState extends State<RecipeInput> {
                 ),
               ),
               const SizedBox(height: 20),
-              //const RecipeIngredientsInput(),
               Row(
                 children: [
                   const Text('Add Instructions: '),
                   IconButton(
                       onPressed: () async {
-                        setState(() {
-                          _instructionsCount++;
-                        });
+                        setState(
+                          () {
+                            _instructionsCount++;
+                          },
+                        );
                       },
                       icon: const Icon(Icons.add)),
                   IconButton(
-                      onPressed: () async {
-                        setState(() {
+                    onPressed: () async {
+                      setState(
+                        () {
                           if (_instructionsCount > 1) {
                             _instructionsCount--;
                           }
-                        });
-                      },
-                      icon: const Icon(Icons.delete)),
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.delete),
+                  ),
                 ],
               ),
               SizedBox(
@@ -156,7 +164,10 @@ class _RecipeInputState extends State<RecipeInput> {
                   children: [
                     Flexible(
                       child: ListView.builder(
-                        itemBuilder: (context, key) {
+                        itemBuilder: (
+                          context,
+                          key,
+                        ) {
                           return _instructionsRow(key);
                         },
                         shrinkWrap: true,
@@ -187,7 +198,10 @@ class _RecipeInputState extends State<RecipeInput> {
                 _instructionsValues,
                 double.parse(cost.text),
               );
-              FirebaseCRUD.addRecipe(recipe, widget.userID);
+              FirebaseCRUD.addRecipe(
+                recipe,
+                widget.userID,
+              );
               Navigator.pushReplacement(
                 context,
                 PageRouteBuilder(
@@ -198,20 +212,30 @@ class _RecipeInputState extends State<RecipeInput> {
               );
             } else {
               setState(() {
-                warning =
-                    'Please ensure:\n - Preparation Time is a whole number\n - Cost is a valid decimal or whole number\n - Ingredients have a name and quantity';
+                warning = 'Please ensure:\n - Preparation Time is a whole '
+                    'number\n - Cost is a valid decimal or whole'
+                    'number\n - Ingredients have a name and quantity';
               });
             }
           },
-          child:
-              const Text('Add Recipe', style: TextStyle(color: Colors.white)),
+          child: const Text(
+            'Add Recipe',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
         ),
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel', style: TextStyle(color: Colors.white)),
+          child: const Text(
+            'Cancel',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
         ),
       ],
     );
@@ -223,7 +247,10 @@ class _RecipeInputState extends State<RecipeInput> {
         Expanded(
             child: TextFormField(
                 onChanged: (value) {
-                  _onIngredientsNameUpdate(key, value);
+                  _onIngredientsNameUpdate(
+                    key,
+                    value,
+                  );
                 },
                 decoration: const InputDecoration(
                     border: InputBorder.none,
@@ -232,7 +259,11 @@ class _RecipeInputState extends State<RecipeInput> {
                     errorBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
                     contentPadding: EdgeInsets.only(
-                        left: 15, bottom: 11, top: 11, right: 15),
+                      left: 15,
+                      bottom: 11,
+                      top: 11,
+                      right: 15,
+                    ),
                     hintText: "Name"))),
         Expanded(
             child: TextFormField(

@@ -1,7 +1,7 @@
-import 'package:cubby/widgets/recipe_cook_display.dart';
+import 'package:cubby/widgets/recipe_widgets/recipe_cook_display.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/recipe.dart';
+import '../../../models/recipe.dart';
 
 // ignore: must_be_immutable
 class RecommendedRecipeCard extends StatefulWidget {

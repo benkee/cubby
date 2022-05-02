@@ -1,9 +1,9 @@
-import 'package:cubby/widgets/food_item_expansion_tile.dart';
+import 'package:cubby/widgets/food_item_widgets/food_item_expansion_tile.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
-import '../../widgets/food_item_input.dart';
+import '../../widgets/food_item_widgets/food_item_input.dart';
 
 class InventoryPage extends StatefulWidget {
   late String userID;

@@ -2,7 +2,7 @@ import 'package:cubby/constants/constants.dart' as constants;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../models/food_item.dart';
+import '../../../models/food_item.dart';
 import 'food_item_freeze_check.dart';
 import 'food_item_waste_check.dart';
 

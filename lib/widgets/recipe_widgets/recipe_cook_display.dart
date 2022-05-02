@@ -2,8 +2,6 @@ import 'package:cubby/models/recipe.dart';
 import 'package:cubby/services/firebase_crud.dart';
 import 'package:flutter/material.dart';
 
-import '../views/home/home.dart';
-
 // ignore: must_be_immutable
 class RecipeCookDisplay extends StatefulWidget {
   late Recipe recipe;

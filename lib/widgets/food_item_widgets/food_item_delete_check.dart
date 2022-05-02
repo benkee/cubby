@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
-import '../views/home/home.dart';
+import '../../views/home/home.dart';
 
 // ignore: must_be_immutable
 class FoodItemDeleteCheck extends StatefulWidget {

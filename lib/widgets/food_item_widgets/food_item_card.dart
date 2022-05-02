@@ -1,7 +1,7 @@
 import 'package:cubby/constants/constants.dart' as constants;
 import 'package:flutter/material.dart';
 
-import '../../models/food_item.dart';
+import '../../../models/food_item.dart';
 import 'food_item_delete_check.dart';
 import 'food_item_edit.dart';
 

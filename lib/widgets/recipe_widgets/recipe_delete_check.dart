@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../services/firebase_crud.dart';
-import '../models/recipe.dart';
-import '../views/home/home.dart';
+import '../../../services/firebase_crud.dart';
+import '../../models/recipe.dart';
+import '../../views/home/home.dart';
 
 // ignore: must_be_immutable
 class RecipeDeleteCheck extends StatefulWidget {

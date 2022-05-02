@@ -1,8 +1,9 @@
 import 'package:cubby/models/cubby_user.dart';
 import 'package:cubby/views/home/inventory.dart';
 import 'package:cubby/views/home/recipes.dart';
-import 'package:cubby/widgets/food_item_expiring_card.dart';
-import 'package:cubby/widgets/recommended_recipe_card.dart';
+import 'package:cubby/views/home/shopping_list.dart';
+import 'package:cubby/widgets/food_item_widgets/food_item_expiring_card.dart';
+import 'package:cubby/widgets/recipe_widgets/recommended_recipe_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,6 @@ class HomePage extends StatefulWidget {
   _HomePage createState() => _HomePage();
 }
 
-//todo: get user from firebase then update user display name and percentage
 class _HomePage extends State<HomePage> {
   PageController? _pageController;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -78,39 +78,39 @@ class _HomePage extends State<HomePage> {
         ),
         actions: <Widget>[
           FutureBuilder(
-              future: FirebaseCRUD.getUser(currentUID),
-              builder:
-                  (BuildContext context, AsyncSnapshot<CubbyUser> snapshot) {
-                if (snapshot.hasData) {
-                  CubbyUser cubbyUser = snapshot.data as CubbyUser;
-                  return Tooltip(
-                    triggerMode: TooltipTriggerMode.tap,
-                    decoration: BoxDecoration(color: Colors.amber[400]),
-                    message:
-                        'Total Food Wasted: ${cubbyUser.foodWasted}\nTotal Food Used: ${cubbyUser.foodUsed}',
-                    child: Column(children: [
-                      Text(
-                        'Welcome, ${cubbyUser.name}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.lightGreen,
-                          fontSize: 20,
-                        ),
+            future: FirebaseCRUD.getUser(currentUID),
+            builder: (BuildContext context, AsyncSnapshot<CubbyUser> snapshot) {
+              if (snapshot.hasData) {
+                CubbyUser cubbyUser = snapshot.data as CubbyUser;
+                return Tooltip(
+                  triggerMode: TooltipTriggerMode.tap,
+                  decoration: BoxDecoration(color: Colors.amber[400]),
+                  message:
+                      'Total Food Wasted: ${cubbyUser.foodWasted}\nTotal Food Used: ${cubbyUser.foodUsed}',
+                  child: Column(children: [
+                    Text(
+                      'Welcome, ${cubbyUser.name}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.lightGreen,
+                        fontSize: 20,
                       ),
-                      Text(
-                        'Food Waste: ${cubbyUser.percentWasted.toString()}%',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
+                    ),
+                    Text(
+                      'Food Waste: ${cubbyUser.percentWasted.toString()}%',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white,
+                        fontSize: 15,
                       ),
-                    ]),
-                  );
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              }),
+                    ),
+                  ]),
+                );
+              } else {
+                return const CircularProgressIndicator();
+              }
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
@@ -120,19 +120,22 @@ class _HomePage extends State<HomePage> {
         ],
       ),
       body: PageView(
-          controller: _pageController,
-          onPageChanged: (newIndex) {
-            setState(() {
+        controller: _pageController,
+        onPageChanged: (newIndex) {
+          setState(
+            () {
               _currentIndex = newIndex;
-            });
-          },
-          children: [
-            InventoryPage(
-              userID: currentUID,
-            ),
-            Center(
-              child:
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            },
+          );
+        },
+        children: [
+          InventoryPage(
+            userID: currentUID,
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
                 const SizedBox(
                   height: 10,
                 ),
@@ -169,19 +172,20 @@ class _HomePage extends State<HomePage> {
                               height: 120,
                               width: 300,
                               child: Card(
-                                  color: Colors.lightGreen,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text(
-                                      'Try adding food items in your inventory, items which are due to expire in the next 5 days will appear here.',
-                                      textAlign: TextAlign.justify,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                      ),
+                                color: Colors.lightGreen,
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    'Try adding food items in your inventory, items which are due to expire in the next 5 days will appear here.',
+                                    textAlign: TextAlign.justify,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 18,
                                     ),
-                                  )),
+                                  ),
+                                ),
+                              ),
                             )
                           ]);
                         } else {
@@ -269,16 +273,24 @@ class _HomePage extends State<HomePage> {
                       }
                     },
                     future: FirebaseCRUD.getRecommendedRecipes(
-                        expiringFoodItems, currentUID),
+                      expiringFoodItems,
+                      currentUID,
+                    ),
                   ),
                 ),
-              ]),
+              ],
             ),
-            RecipePage(
-              userID: currentUID,
-            )
-          ]),
+          ),
+          RecipePage(
+            userID: currentUID,
+          ),
+          ShoppingListPage(
+            userID: currentUID,
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.amber[400],
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -292,6 +304,10 @@ class _HomePage extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
             label: 'Recipes',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Shopping List',
           ),
         ],
         currentIndex: _currentIndex,

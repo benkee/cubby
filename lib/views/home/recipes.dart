@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/recipe.dart';
 import '../../services/firebase_crud.dart';
-import '../../widgets/recipe_card.dart';
-import '../../widgets/recipe_input.dart';
+import '../../widgets/recipe_widgets/recipe_card.dart';
+import '../../widgets/recipe_widgets/recipe_input.dart';
 
 class RecipePage extends StatefulWidget {
   late String userID;
