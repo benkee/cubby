@@ -19,6 +19,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
   late Map _recipes;
   late Map selectedItemName = {0: 'Select a Recipe'};
   late bool includeInventoryItems;
+  late String _shoppingList = 'Failed to gather shopping list.';
 
   @override
   void initState() {
@@ -156,9 +157,10 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                                     'Error gathering data: ${projectSnap.error}'),
                               );
                             } else {
+                              _shoppingList = projectSnap.data.toString();
                               return Center(
                                   child: Text(
-                                projectSnap.data.toString(),
+                                _shoppingList,
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal,
@@ -172,7 +174,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                       ),
                       IconButton(
                         onPressed: () async {
-                          await Share.share('test');
+                          await Share.share(_shoppingList);
                         },
                         icon: const Icon(Icons.share),
                         color: Colors.white,

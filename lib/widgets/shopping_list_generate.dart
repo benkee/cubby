@@ -82,10 +82,8 @@ class ShoppingListGenerate {
 
     await FirebaseCRUD.getFoodItems(userID).then((List<FoodItem> foodItems) {
       if (includeInventoryItems) {
-        print(ingredientsNoDuplicates);
         var ingredientsMinusInventory =
             getIngredientsMinusInventory(ingredientsNoDuplicates, foodItems);
-        print(ingredientsMinusInventory);
         for (var ingredient in ingredientsMinusInventory) {
           _shoppingList +=
               '\u2022  ${ingredient['amount']} ${ingredient['measurement']} of ${ingredient['name']}\n';
