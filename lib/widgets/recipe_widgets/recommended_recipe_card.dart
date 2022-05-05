@@ -59,11 +59,11 @@ class _RecommendedRecipeCardState extends State<RecommendedRecipeCard> {
                     ),
                   )),
               const SizedBox(
-                width: 70,
+                width: 60,
               ),
               RichText(
                   text: TextSpan(
-                text: 'Cost: £${widget.recipe.cost.toString()}',
+                text: 'Cost: £${widget.recipe.cost.toStringAsFixed(2)}',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,

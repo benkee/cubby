@@ -4,7 +4,7 @@ class Recipe {
   List<dynamic> _ingredients;
   int _preparationTime;
   List<dynamic> _instructions;
-  double _cost;
+  dynamic _cost;
 
   Recipe(this._name, this._ingredients, this._preparationTime,
       this._instructions, this._cost);
@@ -14,7 +14,7 @@ class Recipe {
   List<dynamic> get ingredients => _ingredients;
   int get preparationTime => _preparationTime;
   List<dynamic> get instructions => _instructions;
-  double get cost => _cost;
+  dynamic get cost => _cost;
 
   setID(String id) {
     _id = id;
@@ -36,7 +36,7 @@ class Recipe {
     _instructions = instructions;
   }
 
-  setCost(double cost) {
+  setCost(dynamic cost) {
     _cost = cost;
   }
 
@@ -56,5 +56,5 @@ class Recipe {
             json['ingredients'] as List<dynamic>,
             json['preparationTime'] as int,
             json['instructions'] as List<dynamic>,
-            json['cost'] as double);
+            json['cost'] as dynamic);
 }

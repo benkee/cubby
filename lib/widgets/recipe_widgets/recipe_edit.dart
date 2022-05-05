@@ -196,8 +196,8 @@ class _RecipeEditState extends State<RecipeEdit> {
                   widget.recipe, 'name', name.text, widget.userID);
             }
             if (double.tryParse(cost.text) != null) {
-              FirebaseCRUD.updateRecipe(
-                  widget.recipe, 'cost', cost.text, widget.userID);
+              FirebaseCRUD.updateRecipe(widget.recipe, 'cost',
+                  double.parse(cost.text), widget.userID);
             }
             if (int.tryParse(preparationTime.text) != null) {
               FirebaseCRUD.updateRecipe(widget.recipe, 'preparationTime',

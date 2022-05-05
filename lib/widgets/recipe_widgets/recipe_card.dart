@@ -168,7 +168,7 @@ class _RecipeCardState extends State<RecipeCard> {
               const Spacer(),
               RichText(
                   text: TextSpan(
-                text: '£${widget.recipe.cost.toString()}',
+                text: '£${widget.recipe.cost.toStringAsFixed(2)}',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
