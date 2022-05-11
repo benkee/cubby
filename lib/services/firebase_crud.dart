@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cubby/constants/constants.dart' as constants;
 
 import '../models/cubby_user.dart';
 import '../models/food_item.dart';
@@ -130,7 +131,10 @@ class FirebaseCRUD {
         for (Map ingredients in recipe.ingredients) {
           for (FoodItem foodItem in expiringFoodItems) {
             if ((ingredients['name'] as String).toLowerCase().trim() ==
-                foodItem.name.toLowerCase().trim()) {
+                    foodItem.name.toLowerCase().trim() &&
+                constants.foodMeasurements[foodItem.measurement] ==
+                    ingredients['measurement'] &&
+                foodItem.quantity >= int.parse(ingredients['amount'])) {
               if (recipes.length < 5 && !recipes.contains(recipe)) {
                 recipes.add(recipe);
                 recipe.setID(document.id.toString());
@@ -169,25 +173,16 @@ class FirebaseCRUD {
     }
   }
 
-  static Future<String> getUserPercentWasted(String userID) async {
-    String percentWasted = '0';
-    await firestore.collection(userID + 'User').get().then((querySnapshot) {
-      CubbyUser user = CubbyUser.fromJson(querySnapshot.docs.first.data());
-      percentWasted = user.percentWasted;
-    });
-    return percentWasted;
-  }
-
   static void addUser(String userID, String name) async {
     CubbyUser user = CubbyUser(userID, name, 1, 0, true);
-    firestore.collection(userID).doc('UserData').set(user.toJson());
+    firestore.collection(userID).doc('CubbyUser').set(user.toJson());
   }
 
   static Future<CubbyUser> getUser(String userID) async {
     CubbyUser user = CubbyUser('', '', 1, 0, true);
     await firestore
         .collection(userID)
-        .doc('UserData')
+        .doc('CubbyUser')
         .get()
         .then((querySnapshot) {
       user = CubbyUser.fromJson(querySnapshot.data() as Map<String, dynamic>);
@@ -200,7 +195,7 @@ class FirebaseCRUD {
       CubbyUser cubbyUser = result;
       firestore
           .collection(userID)
-          .doc('UserData')
+          .doc('CubbyUser')
           .update({'foodWasted': cubbyUser.foodWasted + 1});
     });
   }
@@ -210,7 +205,7 @@ class FirebaseCRUD {
       CubbyUser cubbyUser = result;
       firestore
           .collection(userID)
-          .doc('UserData')
+          .doc('CubbyUser')
           .update({'foodUsed': (cubbyUser.foodUsed + amount)});
     });
   }
