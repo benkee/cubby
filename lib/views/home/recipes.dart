@@ -6,8 +6,8 @@ import '../../widgets/recipe_widgets/recipe_card.dart';
 import '../../widgets/recipe_widgets/recipe_input.dart';
 
 class RecipePage extends StatefulWidget {
-  late String userID;
-  RecipePage({required this.userID, Key? key}) : super(key: key);
+  final String userID;
+  const RecipePage({required this.userID, Key? key}) : super(key: key);
   getState() => _RecipePageState();
   @override
   State<RecipePage> createState() => _RecipePageState();

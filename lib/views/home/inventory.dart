@@ -6,9 +6,9 @@ import '../../services/firebase_crud.dart';
 import '../../widgets/food_item_widgets/food_item_input.dart';
 
 class InventoryPage extends StatefulWidget {
-  late String userID;
+  final String userID;
 
-  InventoryPage({required this.userID, Key? key}) : super(key: key);
+  const InventoryPage({required this.userID, Key? key}) : super(key: key);
   getState() => _InventoryPageState();
   @override
   State<InventoryPage> createState() => _InventoryPageState();

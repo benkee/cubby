@@ -2,7 +2,7 @@ import 'package:cubby/widgets/recipe_widgets/recipe_cook_display.dart';
 import 'package:cubby/widgets/recipe_widgets/recipe_delete_check.dart';
 import 'package:cubby/widgets/recipe_widgets/recipe_edit.dart';
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../models/recipe.dart';
 

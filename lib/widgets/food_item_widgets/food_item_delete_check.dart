@@ -29,8 +29,8 @@ class _FoodItemDeleteCheckState extends State<FoodItemDeleteCheck> {
         ElevatedButton(
           onPressed: () {
             FirebaseCRUD.deleteFoodItem(widget.foodItem, widget.userID);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage(0)));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomePage(0)));
           },
           child:
               const Text('Delete Item', style: TextStyle(color: Colors.white)),

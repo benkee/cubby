@@ -6,9 +6,9 @@ import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
 
 class FoodItemEdit extends StatefulWidget {
-  late FoodItem foodItem;
-  late String userID;
-  FoodItemEdit({required this.foodItem, required this.userID, Key? key})
+  final FoodItem foodItem;
+  final String userID;
+  const FoodItemEdit({required this.foodItem, required this.userID, Key? key})
       : super(key: key);
 
   @override
@@ -162,8 +162,8 @@ class _FoodItemInputState extends State<FoodItemEdit> {
             updateFoodItem(widget.foodItem, name.text, foodType, foodOpened,
                 foodExpiry, quantity.text, measurement);
 
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage(0)));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomePage(0)));
             setState(() {});
           },
           child: const Text('Edit Item', style: TextStyle(color: Colors.white)),
@@ -174,7 +174,8 @@ class _FoodItemInputState extends State<FoodItemEdit> {
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
-                pageBuilder: (context, animation1, animation2) => HomePage(0),
+                pageBuilder: (context, animation1, animation2) =>
+                    const HomePage(0),
                 transitionDuration: Duration.zero,
                 reverseTransitionDuration: Duration.zero,
               ),

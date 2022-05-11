@@ -12,8 +12,8 @@ import '../../models/recipe.dart';
 import '../../services/firebase_crud.dart';
 
 class HomePage extends StatefulWidget {
-  int selectedIndex;
-  HomePage(this.selectedIndex, {Key? key}) : super(key: key);
+  final int selectedIndex;
+  const HomePage(this.selectedIndex, {Key? key}) : super(key: key);
   @override
   _HomePage createState() => _HomePage();
 }
@@ -85,8 +85,8 @@ class _HomePage extends State<HomePage> {
                 return Tooltip(
                   triggerMode: TooltipTriggerMode.tap,
                   decoration: BoxDecoration(color: Colors.amber[400]),
-                  message:
-                      'Total Food Wasted: ${cubbyUser.foodWasted}\nTotal Food Used: ${cubbyUser.foodUsed}',
+                  message: 'Total Food Wasted: ${cubbyUser.foodWasted}\nTotal '
+                      'Food Used: ${cubbyUser.foodUsed}',
                   child: Column(children: [
                     Text(
                       'Welcome, ${cubbyUser.name}',
@@ -176,7 +176,9 @@ class _HomePage extends State<HomePage> {
                                 child: Padding(
                                   padding: EdgeInsets.all(10),
                                   child: Text(
-                                    'Try adding food items in your inventory, items which are due to expire in the next 5 days will appear here.',
+                                    'Try adding food items in your inventory,'
+                                    ' items which are due to expire in'
+                                    ' the next 5 days will appear here.',
                                     textAlign: TextAlign.justify,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -244,7 +246,12 @@ class _HomePage extends State<HomePage> {
                                   child: Padding(
                                     padding: EdgeInsets.all(10),
                                     child: Text(
-                                      'Try adding a recipe to your recipes with an expiring food item as a ingredient, when a recipe has an expiring food item (in the next 5 days) as an ingredient it will appear here.',
+                                      'Try adding a recipe to your recipes '
+                                      'with an expiring food item as a '
+                                      'ingredient, when a recipe has an'
+                                      ' expiring food item (in the next 5'
+                                      ' days) as an ingredient it will'
+                                      ' appear here.',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,

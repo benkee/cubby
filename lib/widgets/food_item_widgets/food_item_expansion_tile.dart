@@ -5,10 +5,10 @@ import '../../models/food_item.dart';
 import 'food_item_card.dart';
 
 class FoodItemExpansionTile extends StatefulWidget {
-  late int type;
-  late List<FoodItem> foodItems;
-  late String userID;
-  FoodItemExpansionTile(
+  final int type;
+  final List<FoodItem> foodItems;
+  final String userID;
+  const FoodItemExpansionTile(
       {required this.type,
       required this.foodItems,
       required this.userID,

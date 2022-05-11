@@ -6,8 +6,8 @@ import '../../models/recipe.dart';
 import '../../services/firebase_crud.dart';
 
 class RecipeInput extends StatefulWidget {
-  late String userID;
-  RecipeInput({required this.userID, Key? key}) : super(key: key);
+  final String userID;
+  const RecipeInput({required this.userID, Key? key}) : super(key: key);
 
   @override
   _RecipeInputState createState() => _RecipeInputState();
@@ -205,7 +205,8 @@ class _RecipeInputState extends State<RecipeInput> {
               Navigator.pushReplacement(
                 context,
                 PageRouteBuilder(
-                  pageBuilder: (context, animation1, animation2) => HomePage(2),
+                  pageBuilder: (context, animation1, animation2) =>
+                      const HomePage(2),
                   transitionDuration: Duration.zero,
                   reverseTransitionDuration: Duration.zero,
                 ),

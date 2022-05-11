@@ -42,8 +42,8 @@ class _FoodItemFreezeCheckState extends State<FoodItemFreezeCheck> {
             FirebaseCRUD.updateFoodItem(widget.foodItem, 'expires',
                 widget.foodItem.expires, widget.userID);
             FirebaseCRUD.updateUserFoodWasted(widget.userID);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage(1)));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomePage(1)));
             setState(() {});
           },
           child:

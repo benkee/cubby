@@ -1,14 +1,14 @@
 import 'package:cubby/constants/constants.dart' as constants;
-import 'package:cubby/views/home/home.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/food_item.dart';
 import '../../services/firebase_crud.dart';
+import '../../views/home/home.dart';
 
 class FoodItemInput extends StatefulWidget {
-  late String userID;
+  final String userID;
 
-  FoodItemInput({required this.userID, Key? key}) : super(key: key);
+  const FoodItemInput({required this.userID, Key? key}) : super(key: key);
   @override
   _FoodItemInputState createState() => _FoodItemInputState();
 }
@@ -57,7 +57,9 @@ class _FoodItemInputState extends State<FoodItemInput> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(warning, style: const TextStyle(color: Colors.red)),
-              const SizedBox(height: 5,),
+              const SizedBox(
+                height: 5,
+              ),
               TextField(
                 controller: name,
                 obscureText: false,
@@ -164,7 +166,8 @@ class _FoodItemInputState extends State<FoodItemInput> {
               Navigator.pushReplacement(
                 context,
                 PageRouteBuilder(
-                  pageBuilder: (context, animation1, animation2) => HomePage(0),
+                  pageBuilder: (context, animation1, animation2) =>
+                      const HomePage(0),
                   transitionDuration: Duration.zero,
                   reverseTransitionDuration: Duration.zero,
                 ),

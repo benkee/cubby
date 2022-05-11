@@ -28,14 +28,14 @@ class _RecipeDeleteCheckState extends State<RecipeDeleteCheck> {
         child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[]),
+            children: const <Widget>[]),
       ),
       actions: <Widget>[
         ElevatedButton(
           onPressed: () {
             FirebaseCRUD.deleteRecipe(widget.recipe, widget.userID);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage(2)));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomePage(2)));
           },
           child:
               const Text('Delete Item', style: TextStyle(color: Colors.white)),

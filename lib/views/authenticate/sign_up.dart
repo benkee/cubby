@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cubby/services/firebase_crud.dart';
 import 'package:cubby/services/form_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +8,8 @@ import 'package:flutter/material.dart';
 import '../../services/form_validator.dart';
 
 class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
+
   @override
   _SignUpPage createState() => _SignUpPage();
 }
@@ -52,8 +56,7 @@ class _SignUpPage extends State<SignUpPage> {
         });
       }
     } catch (e) {
-      print('FAILED TO CREATE USER ...............');
-      print(e);
+      log(e.toString());
     }
   }
 
@@ -110,7 +113,7 @@ class _SignUpPage extends State<SignUpPage> {
                   hintText: 'Email',
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
               TextField(
                 controller: password,
                 obscureText: true,
@@ -119,13 +122,13 @@ class _SignUpPage extends State<SignUpPage> {
                   hintText: 'Password',
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
               TextField(
                 controller: firstName,
                 obscureText: false,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'First Name',
+                  hintText: 'Display Name',
                 ),
               ),
               const SizedBox(height: 10),

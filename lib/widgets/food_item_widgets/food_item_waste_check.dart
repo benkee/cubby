@@ -35,8 +35,8 @@ class _FoodItemWasteCheckState extends State<FoodItemWasteCheck> {
           onPressed: () {
             FirebaseCRUD.updateUserFoodWasted(widget.userID);
             FirebaseCRUD.deleteFoodItem(widget.foodItem, widget.userID);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage(1)));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomePage(1)));
             setState(() {});
           },
           child:

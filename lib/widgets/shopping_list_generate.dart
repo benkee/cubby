@@ -62,6 +62,8 @@ class ShoppingListGenerate {
           ingredient['amount'] =
               (int.parse(ingredient['amount']) - foodItem.quantity).toString();
         }
+        ingredient['revertAmount'] =
+            (int.parse(ingredient['amount']) - foodItem.quantity).toString();
         if (int.parse(ingredient['amount']) > 0 &&
             !ingredientsMinusInventory.contains(ingredient)) {
           ingredientsMinusInventory.add(ingredient);
@@ -95,7 +97,10 @@ class ShoppingListGenerate {
         }
       }
     });
-    if (_shoppingList == '') {
+    print(_shoppingList);
+    if (ingredientsNoDuplicates.isNotEmpty && _shoppingList == '') {
+      _shoppingList = 'You already have the ingredients in your inventory.';
+    } else if (_shoppingList == '') {
       _shoppingList = 'Failed to gather recipes.';
     }
     revertRecipes(ingredientsNoDuplicates);

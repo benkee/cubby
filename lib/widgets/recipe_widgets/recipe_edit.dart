@@ -6,9 +6,9 @@ import '../../models/recipe.dart';
 import '../../services/firebase_crud.dart';
 
 class RecipeEdit extends StatefulWidget {
-  late String userID;
-  late Recipe recipe;
-  RecipeEdit({required this.recipe, required this.userID, Key? key})
+  final String userID;
+  final Recipe recipe;
+  const RecipeEdit({required this.recipe, required this.userID, Key? key})
       : super(key: key);
 
   @override
@@ -211,7 +211,8 @@ class _RecipeEditState extends State<RecipeEdit> {
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
-                pageBuilder: (context, animation1, animation2) => HomePage(2),
+                pageBuilder: (context, animation1, animation2) =>
+                    const HomePage(2),
                 transitionDuration: Duration.zero,
                 reverseTransitionDuration: Duration.zero,
               ),
