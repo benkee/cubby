@@ -53,17 +53,22 @@ class _RecipePageState extends State<RecipePage> {
         },
         future: FirebaseCRUD.getRecipes(widget.userID),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.amber,
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => RecipeInput(
-              userID: widget.userID,
-            ),
-          );
-        },
+      floatingActionButton: SizedBox(
+        width: 80,
+        height: 80,
+        child: FloatingActionButton(
+          foregroundColor: Colors.lightGreen,
+          child: const Icon(Icons.add),
+          backgroundColor: Colors.amber,
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => RecipeInput(
+                userID: widget.userID,
+              ),
+            );
+          },
+        ),
       ),
     );
   }

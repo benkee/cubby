@@ -1,5 +1,7 @@
+import 'package:uuid/uuid.dart';
+
 class FoodItem {
-  String _id = '';
+  String _id = const Uuid().toString();
   String _name;
   int _type;
   bool _opened;

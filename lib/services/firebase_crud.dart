@@ -10,31 +10,44 @@ class FirebaseCRUD {
 
   static void addFoodItem(FoodItem foodItem, String userID) async {
     firestore
-        .collection(userID + 'FoodItem')
-        .add(foodItem.toJson())
-        .then((value) => foodItem.setID(value.id));
+        .collection(userID)
+        .doc('FoodItem')
+        .collection('FoodItems')
+        .add(foodItem.toJson());
   }
 
   static Future<List<FoodItem>> getFoodItems(String userID) async {
     List<FoodItem> foodItems = [];
-    await firestore.collection(userID + 'FoodItem').get().then((querySnapshot) {
-      for (var document in querySnapshot.docs) {
+    await firestore
+        .collection(userID)
+        .doc('FoodItem')
+        .collection('FoodItems')
+        .get()
+        .then((snapshot) {
+      for (var document in snapshot.docs) {
         FoodItem foodItem = FoodItem.fromJson(document.data());
-        foodItems.add(foodItem);
         foodItem.setID(document.id.toString());
+        foodItems.add(foodItem);
       }
     });
     return foodItems;
   }
 
   static void deleteFoodItem(FoodItem foodItem, String userID) {
-    firestore.collection(userID + 'FoodItem').doc(foodItem.id).delete();
+    firestore
+        .collection(userID)
+        .doc('FoodItem')
+        .collection('FoodItems')
+        .doc(foodItem.id)
+        .delete();
   }
 
   static void updateFoodItem(
       FoodItem foodItem, String field, dynamic value, String userID) {
     firestore
-        .collection(userID + 'FoodItem')
+        .collection(userID)
+        .doc('FoodItem')
+        .collection('FoodItems')
         .doc(foodItem.id)
         .update({field: value});
   }
@@ -42,14 +55,21 @@ class FirebaseCRUD {
   static void updateRecipe(
       Recipe recipe, String field, dynamic value, String userID) {
     firestore
-        .collection(userID + 'Recipes')
+        .collection(userID)
+        .doc('Recipe')
+        .collection('Recipes')
         .doc(recipe.id)
         .update({field: value});
   }
 
   static Future<List<Recipe>> getRecipes(String userID) async {
     List<Recipe> recipes = [];
-    await firestore.collection(userID + 'Recipes').get().then((querySnapshot) {
+    await firestore
+        .collection(userID)
+        .doc('Recipe')
+        .collection('Recipes')
+        .get()
+        .then((querySnapshot) {
       for (var document in querySnapshot.docs) {
         Recipe recipe = Recipe.fromJson(document.data());
         recipes.add(recipe);
@@ -61,27 +81,36 @@ class FirebaseCRUD {
 
   static void addRecipe(Recipe recipe, String userID) async {
     firestore
-        .collection(userID + 'Recipes')
+        .collection(userID)
+        .doc('Recipe')
+        .collection('Recipes')
         .add(recipe.toJson())
         .then((value) => recipe.setID(value.id));
   }
 
   static void deleteRecipe(Recipe recipe, String userID) {
-    firestore.collection(userID + 'Recipes').doc(recipe.id).delete();
+    firestore
+        .collection(userID)
+        .doc('Recipe')
+        .collection('Recipes')
+        .doc(recipe.id)
+        .delete();
   }
 
   static Future<List<FoodItem>> getExpiringFoodItems(String userID) async {
     List<FoodItem> foodItems = [];
     await firestore
-        .collection(userID + 'FoodItem')
+        .collection(userID)
+        .doc('FoodItem')
+        .collection('FoodItems')
         .orderBy('expires')
         .limit(5)
         .get()
         .then((querySnapshot) {
       for (var document in querySnapshot.docs) {
         FoodItem foodItem = FoodItem.fromJson(document.data());
-        foodItems.add(foodItem);
         foodItem.setID(document.id.toString());
+        foodItems.add(foodItem);
       }
     });
     return foodItems;
@@ -90,7 +119,12 @@ class FirebaseCRUD {
   static Future<List<Recipe>> getRecommendedRecipes(
       List<FoodItem> expiringFoodItems, String userID) async {
     List<Recipe> recipes = [];
-    await firestore.collection(userID + 'Recipes').get().then((querySnapshot) {
+    await firestore
+        .collection(userID)
+        .doc('Recipe')
+        .collection('Recipes')
+        .get()
+        .then((querySnapshot) {
       for (var document in querySnapshot.docs) {
         Recipe recipe = Recipe.fromJson(document.data());
         for (Map ingredients in recipe.ingredients) {
@@ -146,13 +180,17 @@ class FirebaseCRUD {
 
   static void addUser(String userID, String name) async {
     CubbyUser user = CubbyUser(userID, name, 1, 0, true);
-    firestore.collection(userID + 'User').doc('userData').set(user.toJson());
+    firestore.collection(userID).doc('UserData').set(user.toJson());
   }
 
   static Future<CubbyUser> getUser(String userID) async {
     CubbyUser user = CubbyUser('', '', 1, 0, true);
-    await firestore.collection(userID + 'User').get().then((querySnapshot) {
-      user = CubbyUser.fromJson(querySnapshot.docs.first.data());
+    await firestore
+        .collection(userID)
+        .doc('UserData')
+        .get()
+        .then((querySnapshot) {
+      user = CubbyUser.fromJson(querySnapshot.data() as Map<String, dynamic>);
     });
     return user;
   }
@@ -161,8 +199,8 @@ class FirebaseCRUD {
     getUser(userID).then((result) {
       CubbyUser cubbyUser = result;
       firestore
-          .collection(userID + 'User')
-          .doc('userData')
+          .collection(userID)
+          .doc('UserData')
           .update({'foodWasted': cubbyUser.foodWasted + 1});
     });
   }
@@ -171,8 +209,8 @@ class FirebaseCRUD {
     getUser(userID).then((result) {
       CubbyUser cubbyUser = result;
       firestore
-          .collection(userID + 'User')
-          .doc('userData')
+          .collection(userID)
+          .doc('UserData')
           .update({'foodUsed': (cubbyUser.foodUsed + amount)});
     });
   }

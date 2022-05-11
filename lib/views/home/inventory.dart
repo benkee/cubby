@@ -50,17 +50,22 @@ class _InventoryPageState extends State<InventoryPage> {
         },
         future: FirebaseCRUD.getFoodItems(widget.userID),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.amber,
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => FoodItemInput(
-              userID: widget.userID,
-            ),
-          );
-        },
+      floatingActionButton: SizedBox(
+        width: 80,
+        height: 80,
+        child: FloatingActionButton(
+          foregroundColor: Colors.lightGreen,
+          child: const Icon(Icons.add),
+          backgroundColor: Colors.amber,
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => FoodItemInput(
+                userID: widget.userID,
+              ),
+            );
+          },
+        ),
       ),
     );
   }

@@ -201,7 +201,7 @@ class _RecipeEditState extends State<RecipeEdit> {
             }
             if (int.tryParse(preparationTime.text) != null) {
               FirebaseCRUD.updateRecipe(widget.recipe, 'preparationTime',
-                  preparationTime.text, widget.userID);
+                  int.parse(preparationTime.text), widget.userID);
             }
             FirebaseCRUD.updateRecipe(
                 widget.recipe, 'ingredients', _ingredientValues, widget.userID);

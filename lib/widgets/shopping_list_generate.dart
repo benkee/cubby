@@ -81,10 +81,10 @@ class ShoppingListGenerate {
         getAllIngredientsFromRecipes(newRecipes.isEmpty ? {} : recipes);
     List ingredientsNoDuplicates =
         getAllIngredientsNoDuplicates(allIngredientsFromRecipes);
-
+    var ingredientsMinusInventory = [];
     await FirebaseCRUD.getFoodItems(userID).then((List<FoodItem> foodItems) {
       if (includeInventoryItems) {
-        var ingredientsMinusInventory =
+        ingredientsMinusInventory =
             getIngredientsMinusInventory(ingredientsNoDuplicates, foodItems);
         for (var ingredient in ingredientsMinusInventory) {
           _shoppingList +=
@@ -97,8 +97,14 @@ class ShoppingListGenerate {
         }
       }
     });
-    print(_shoppingList);
-    if (ingredientsNoDuplicates.isNotEmpty && _shoppingList == '') {
+    bool ingredientsNotZero = false;
+    for (var ingredient in ingredientsMinusInventory) {
+      if (int.parse(ingredient['amount']) > 0) {
+        ingredientsNotZero = true;
+      }
+    }
+    if (ingredientsNoDuplicates.isNotEmpty && _shoppingList == '' ||
+        !ingredientsNotZero && includeInventoryItems) {
       _shoppingList = 'You already have the ingredients in your inventory.';
     } else if (_shoppingList == '') {
       _shoppingList = 'Failed to gather recipes.';
