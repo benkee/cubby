@@ -12,9 +12,15 @@ class CubbyUser {
   String get name => _name;
   int get foodUsed => _foodUsed;
   int get foodWasted => _foodWasted;
-  String get percentWasted =>
-      ((_foodWasted / _foodUsed) * 100).toStringAsPrecision(4);
   bool get newUser => _newUser;
+
+  String get percentWasted {
+    if (((_foodWasted / _foodUsed) * 100) > 100) {
+      return '100.0';
+    } else {
+      return ((_foodWasted / _foodUsed) * 100).toStringAsPrecision(4);
+    }
+  }
 
   setName(String name) {
     _name = name;

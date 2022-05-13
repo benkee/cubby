@@ -34,15 +34,22 @@ class _RecipeCardState extends State<RecipeCard> {
           child: Column(children: [
             Row(
               children: [
-                RichText(
-                    text: TextSpan(
-                  text: widget.recipe.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 30,
+                SizedBox(
+                  width: 250,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: RichText(
+                      text: TextSpan(
+                        text: widget.recipe.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ),
                   ),
-                )),
+                ),
                 const Spacer(),
                 IconButton(
                   onPressed: () {
@@ -227,8 +234,8 @@ class _RecipeCardState extends State<RecipeCard> {
         widget.recipe.name +
         '\nPreparation Time: ' +
         widget.recipe.preparationTime.toString() +
-        '\nCost: ' +
-        widget.recipe.cost.toString() +
+        ' mins\nCost: £' +
+        widget.recipe.cost.toStringAsFixed(2) +
         '\nIngredients: ' +
         ingredientsString +
         '\nInstructions: ' +

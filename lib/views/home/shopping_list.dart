@@ -158,15 +158,19 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                               );
                             } else {
                               _shoppingList = projectSnap.data.toString();
-                              return Center(
+                              return SizedBox(
+                                height: 500,
+                                child: SingleChildScrollView(
                                   child: Text(
-                                _shoppingList,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 25,
+                                    _shoppingList,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 25,
+                                    ),
+                                  ),
                                 ),
-                              ));
+                              );
                             }
                           }),
                       const SizedBox(
@@ -229,11 +233,17 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                   },
                 );
               },
-              hint: Text(
-                ' - ' + selectedItemName[key]!,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
+              hint: SizedBox(
+                width: 350,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    ' - ' + selectedItemName[key]!,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                    ),
+                  ),
                 ),
               ),
             );

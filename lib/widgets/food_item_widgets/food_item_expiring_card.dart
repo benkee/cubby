@@ -29,7 +29,7 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
     switch (daysRemaining) {
       case 0:
         cardColor = Colors.red[600];
-        expiresText = 'Expires today';
+        expiresText = 'Expires Today';
         break;
       case 1:
         cardColor = Colors.red[400];
@@ -75,30 +75,6 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
                     children: [
                       RichText(
                           text: TextSpan(
-                        text: widget.foodItem.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 25,
-                        ),
-                      )),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      RichText(
-                          text: TextSpan(
-                        text: expiresText,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
-                      )),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      RichText(
-                          text: TextSpan(
                         text:
                             "${widget.foodItem.quantity} ${constants.foodMeasurements[widget.foodItem.measurement]}",
                         style: const TextStyle(
@@ -107,10 +83,41 @@ class _ExpiringFoodItemCardState extends State<ExpiringFoodItemCard> {
                           fontSize: 15,
                         ),
                       )),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      SizedBox(
+                        width: 130,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: RichText(
+                            text: TextSpan(
+                              text: widget.foodItem.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 25,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      RichText(
+                          text: TextSpan(
+                        text: expiresText,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      )),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          widget.foodItem.type != 5
+                          widget.foodItem.type != 6
                               ? IconButton(
                                   onPressed: () {
                                     showDialog(

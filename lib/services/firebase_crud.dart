@@ -176,6 +176,10 @@ class FirebaseCRUD {
   static void addUser(String userID, String name) async {
     CubbyUser user = CubbyUser(userID, name, 1, 0, true);
     firestore.collection(userID).doc('CubbyUser').set(user.toJson());
+    for (Map<String, dynamic> startRecipe in constants.startingRecipes) {
+      Recipe recipe = Recipe.fromJson(startRecipe);
+      addRecipe(recipe, userID);
+    }
   }
 
   static Future<CubbyUser> getUser(String userID) async {

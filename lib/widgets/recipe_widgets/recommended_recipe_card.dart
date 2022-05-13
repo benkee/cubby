@@ -29,15 +29,18 @@ class _RecommendedRecipeCardState extends State<RecommendedRecipeCard> {
           height: 205,
           width: double.maxFinite,
           child: Column(children: [
-            RichText(
-                text: TextSpan(
-              text: widget.recipe.name,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 30,
-              ),
-            )),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: RichText(
+                  text: TextSpan(
+                text: widget.recipe.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 30,
+                ),
+              )),
+            ),
             Row(children: [
               RichText(
                   text: TextSpan(

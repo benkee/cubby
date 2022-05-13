@@ -1,3 +1,4 @@
+import 'package:cubby/constants/constants.dart' as constants;
 import 'package:cubby/widgets/food_item_widgets/food_item_expansion_tile.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,7 @@ class _InventoryPageState extends State<InventoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       backgroundColor: Colors.amber[300],
       body: FutureBuilder(
         builder: (context, projectSnap) {
@@ -33,7 +35,7 @@ class _InventoryPageState extends State<InventoryPage> {
             List<FoodItem> foodItems = projectSnap.data as List<FoodItem>;
             Map categorizedFoodItems = {};
             List<Widget> expansionTiles = [];
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < constants.foodTypes.length; i++) {
               categorizedFoodItems[i] =
                   foodItems.where((element) => element.type == i).toList();
               categorizedFoodItems[i].sort((a, b) =>
@@ -51,8 +53,8 @@ class _InventoryPageState extends State<InventoryPage> {
         future: FirebaseCRUD.getFoodItems(widget.userID),
       ),
       floatingActionButton: SizedBox(
-        width: 80,
-        height: 80,
+        width: 70,
+        height: 70,
         child: FloatingActionButton(
           foregroundColor: Colors.lightGreen,
           child: const Icon(Icons.add),
