@@ -10,18 +10,18 @@ class FormValidator {
   static final _validateDisplayName =
       ValidationBuilder().minLength(1).maxLength(15).build();
 
-  static String? validateSignUp(
-      String email, String password, String displayName) {
+  static String? validateSignUp(String email, String password,
+      String repeatedPassword, String displayName) {
     if (_validateEmail(email) != null) {
       return _validateEmail(email);
     } else if (_validatePassword(password) != null) {
       return _validatePassword(password);
+    } else if (repeatedPassword != password) {
+      return 'Make sure passwords match';
+    } else if (_validateDisplayName(displayName) != null) {
+      return _validateDisplayName(displayName);
     } else {
-      if (_validateDisplayName(displayName) != null) {
-        return _validateDisplayName(displayName);
-      } else {
-        return null;
-      }
+      return null;
     }
   }
 }

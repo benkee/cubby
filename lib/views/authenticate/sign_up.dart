@@ -18,6 +18,7 @@ class _SignUpPage extends State<SignUpPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final username = TextEditingController();
   final password = TextEditingController();
+  final repeatedPassword = TextEditingController();
   final firstName = TextEditingController();
   @override
   late BuildContext context;
@@ -72,6 +73,7 @@ class _SignUpPage extends State<SignUpPage> {
     username.dispose();
     password.dispose();
     firstName.dispose();
+    repeatedPassword.dispose();
   }
 
   String _formAlertText = '';
@@ -124,6 +126,15 @@ class _SignUpPage extends State<SignUpPage> {
               ),
               const SizedBox(height: 15),
               TextField(
+                controller: repeatedPassword,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Repeat Password',
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextField(
                 controller: firstName,
                 obscureText: false,
                 decoration: const InputDecoration(
@@ -133,13 +144,16 @@ class _SignUpPage extends State<SignUpPage> {
               ),
               const SizedBox(height: 10),
               Text(_formAlertText),
-              const SizedBox(height: 30),
+              const Spacer(),
               SizedBox(
                 width: 150,
                 child: ElevatedButton(
                   onPressed: () {
                     String? validator = FormValidator.validateSignUp(
-                        username.text, password.text, firstName.text);
+                        username.text,
+                        password.text,
+                        repeatedPassword.text,
+                        firstName.text);
                     if (validator != null) {
                       _updateFormAlertText(validator);
                     } else {

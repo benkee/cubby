@@ -26,6 +26,14 @@ class _FoodItemExpansionTileState extends State<FoodItemExpansionTile> {
         iconColor: Colors.white,
         backgroundColor: Colors.amber[250],
         collapsedBackgroundColor: Colors.amber[350],
+        subtitle: Text(
+          constants.foodTypeExamples[widget.type],
+          style: const TextStyle(
+            fontWeight: FontWeight.normal,
+            color: Colors.white,
+            fontSize: 14,
+          ),
+        ),
         title: Row(children: [
           Text(
             constants.foodTypes[widget.type],

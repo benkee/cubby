@@ -24,6 +24,16 @@ const List<String> foodMeasurements = [
   'item/s',
 ];
 
+const List<String> foodTypeExamples = [
+  'Apples, Pears, Berries...',
+  'Leafy Greens, Cruciferous, Allium...',
+  'Red Meat, Poultry, Seafood...',
+  'Any Tinned Items',
+  'Milk, Butter, Cheese...',
+  'Bread, Pasta, Oats...',
+  'Any Frozen Items',
+];
+
 const List<Map<String, dynamic>> startingRecipes = [
   {
     'name': 'Sausage Ragu',
