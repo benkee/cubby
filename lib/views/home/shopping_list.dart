@@ -159,7 +159,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                             } else {
                               _shoppingList = projectSnap.data.toString();
                               return SizedBox(
-                                height: 500,
+                                height: 400,
                                 child: SingleChildScrollView(
                                   child: Text(
                                     _shoppingList,

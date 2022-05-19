@@ -1,3 +1,4 @@
+import 'package:cubby/constants/constants.dart' as constants;
 import 'package:flutter/material.dart';
 
 import '../../models/food_item.dart';
@@ -34,7 +35,7 @@ class _FoodItemFreezeCheckState extends State<FoodItemFreezeCheck> {
       actions: <Widget>[
         ElevatedButton(
           onPressed: () {
-            widget.foodItem.setType(5);
+            widget.foodItem.setType(constants.foodTypes.indexOf('Frozen'));
             widget.foodItem.setExpires(
                 widget.foodItem.expires.add(const Duration(days: 90)));
             FirebaseCRUD.updateFoodItem(
